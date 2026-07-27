@@ -1521,6 +1521,7 @@ function closeInfo() {
   els.infoPanel.classList.remove('visible');
   els.infoPanel.style.transform = '';
   document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
+  if (window.innerWidth <= 768) stopFollowing();
 }
 
 // ============ CLICK FUERA ============

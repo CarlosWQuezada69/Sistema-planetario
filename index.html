@@ -18,7 +18,6 @@ html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;
 /* ========== FONDO ========== */
 #solar-system{
   position:relative;width:100%;height:100vh;height:calc(var(--vh,1vh)*100);
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
   background:
     radial-gradient(ellipse at 20% 50%, rgba(40,0,80,0.3) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(0,20,80,0.25) 0%, transparent 50%),
@@ -403,7 +402,6 @@ html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;
   overflow-y:auto;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
   -webkit-overflow-scrolling:touch;
-  will-change:transform;
 }
 #controls h2{
   font-size:13px;font-weight:600;
@@ -510,7 +508,6 @@ input[type=range]::-webkit-slider-thumb{
   box-shadow:0 8px 32px rgba(0,0,0,0.5);
   transform:translateY(120%);opacity:0;
   transition:transform 0.35s ease, opacity 0.3s ease;
-  will-change:transform;
 }
 #info-panel.visible{transform:translateY(0);opacity:1;}
 /* Drag handle para móvil */
@@ -1028,7 +1025,7 @@ let currentSpeed = 1;
 let currentZoom = 1;
 let currentFollowing = null;
 let followRaf = null;
-let trackSkip = false;
+let trackSkip = 0;
 const options = { orbits: true, labels: true, asteroids: true, constellations: true };
 
 // En móvil, abrir todas las categorías por defecto
@@ -1271,9 +1268,9 @@ function trackPlanetLoop() {
   const orbit = document.querySelector(`[data-planet="${currentFollowing}"]`);
   if (!orbit) { followRaf = null; return; }
 
-  // Skip every other frame to reduce layout thrashing from getBoundingClientRect
-  if (trackSkip) { trackSkip = false; followRaf = requestAnimationFrame(trackPlanetLoop); return; }
-  trackSkip = true;
+  // Throttle: solo leer layout cada 4 frames (~15fps) para evitar layout thrashing
+  if (trackSkip < 3) { trackSkip++; followRaf = requestAnimationFrame(trackPlanetLoop); return; }
+  trackSkip = 0;
 
   const rect = orbit.getBoundingClientRect();
   const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;

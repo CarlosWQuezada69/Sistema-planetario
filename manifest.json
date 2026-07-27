@@ -1,0 +1,15 @@
+{
+  "name": "Sistema Solar - Simulación Interactiva",
+  "short_name": "Sistema Solar",
+  "description": "Simulación interactiva del sistema solar con planetas, asteroides, estrellas, agujeros negros y constelaciones",
+  "start_url": "/solar_system.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#05050f",
+  "theme_color": "#05050f",
+  "lang": "es",
+  "icons": [
+    { "src": "icon-192.svg", "sizes": "192x192", "type": "image/svg+xml" },
+    { "src": "icon-512.svg", "sizes": "512x512", "type": "image/svg+xml" }
+  ]
+}

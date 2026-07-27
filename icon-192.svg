@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="32" fill="#05050f"/>
+  <circle cx="96" cy="96" r="24" fill="#FFA500">
+    <animate attributeName="r" values="24;26;24" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="96" cy="96" r="24" fill="none" stroke="rgba(255,200,50,0.3)" stroke-width="8"/>
+  <circle cx="96" cy="96" r="42" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+  <circle cx="138" cy="96" r="5" fill="#1e90ff"/>
+  <circle cx="96" cy="96" r="56" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="4 4"/>
+  <circle cx="96" cy="40" r="7" fill="#daa520"/>
+  <circle cx="96" cy="96" r="72" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 4"/>
+  <circle cx="24" cy="96" r="3" fill="#cd5c5c"/>
+</svg>

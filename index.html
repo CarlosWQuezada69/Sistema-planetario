@@ -13,11 +13,11 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--speed:1;--vh:1vh;}
-html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
 
 /* ========== FONDO ========== */
 #solar-system{
-  position:relative;width:100vw;height:100vh;
+  position:relative;width:100%;height:100vh;height:calc(var(--vh,1vh)*100);
   background:
     radial-gradient(ellipse at 20% 50%, rgba(40,0,80,0.3) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(0,20,80,0.25) 0%, transparent 50%),
@@ -59,7 +59,6 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     0 0 220px 80px rgba(255,80,0,0.15),
     inset -10px -10px 25px rgba(180,50,0,0.4);
   animation:sun-pulse 4s ease-in-out infinite;
-  contain:layout style paint;
 }
 .sun::before{
   content:'';position:absolute;inset:-30px;border-radius:50%;z-index:-1;
@@ -87,7 +86,6 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   border:1px dashed rgba(255,255,255,0.1);
   animation:spin calc(var(--period) / var(--speed)) linear infinite;
   transform-origin:center center;
-  will-change:transform;
   -webkit-transform-origin:center center;
 }
 .orbit:hover{border-color:rgba(255,255,255,0.25);}
@@ -112,8 +110,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   color:#fff;text-shadow:0 0 8px rgba(0,0,0,0.95),0 0 4px rgba(0,0,0,0.8);
   white-space:nowrap;
   padding:3px 8px;border-radius:4px;
-  background:rgba(0,0,0,0.55);
-  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  background:rgba(0,0,0,0.65);
 }
 .planet-label.hidden{display:none;}
 
@@ -508,7 +505,6 @@ input[type=range]::-webkit-slider-thumb{
   box-shadow:0 8px 32px rgba(0,0,0,0.5);
   transform:translateY(120%);opacity:0;
   transition:transform 0.4s ease, opacity 0.4s ease;
-  contain:layout style;
 }
 #info-panel.visible{transform:translateY(0);opacity:1;}
 /* Drag handle para móvil */
@@ -571,11 +567,10 @@ input[type=range]::-webkit-slider-thumb{
   #controls-toggle{
     display:flex;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99;
     width:52px;height:52px;border-radius:50%;
-    background:rgba(8,8,28,0.95);border:1px solid rgba(255,255,255,0.15);
+    background:rgba(15,15,40,0.95);border:1px solid rgba(255,255,255,0.15);
     align-items:center;justify-content:center;
     font-size:22px;cursor:pointer;box-shadow:0 4px 24px rgba(0,0,0,0.6);
-    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-    transition:transform 0.2s, box-shadow 0.2s;
+    transition:transform 0.2s;
   }
   #controls-toggle:active{transform:translateX(-50%) scale(0.92);}
   #controls-toggle.hidden{display:none;}
@@ -583,16 +578,14 @@ input[type=range]::-webkit-slider-thumb{
   #controls{
     position:fixed;bottom:0;left:0;right:0;top:auto;z-index:99;
     width:100%;border-radius:18px 18px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));
-    max-height:65vh;overflow-y:auto;
-    background:rgba(10,10,35,0.97);
+    max-height:70vh;overflow-y:auto;
+    background:rgba(10,10,35,0.98);
     border:1px solid rgba(255,255,255,0.06);
     border-bottom:none;
     box-shadow:0 -8px 40px rgba(0,0,0,0.5);
-    transform:translateY(100%);
+    transform:translateY(calc(100% + 20px));
     transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);
     scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
-    -webkit-overflow-scrolling:touch;
-    touch-action:pan-y;
   }
   #controls::before{
     content:'';position:sticky;top:0;display:block;
@@ -633,7 +626,7 @@ input[type=range]::-webkit-slider-thumb{
   #zoom-indicator{bottom:80px;left:50%;transform:translateX(-50%);font-size:10px;padding:4px 10px;border-radius:16px;white-space:nowrap;}
   .star-container{pointer-events:none;}
 
-  #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:16px 16px 0 0;max-height:50vh;padding:14px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;touch-action:pan-y;}
+  #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:16px 16px 0 0;max-height:55vh;padding:14px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;}
   #info-panel.visible{transform:translateY(0);}
   .info-handle{display:block;height:3px;width:32px;margin-bottom:8px;border-radius:2px;}
   #info-panel h3{font-size:15px;margin-bottom:2px;}
@@ -1506,17 +1499,23 @@ els.solarSystem.addEventListener('click', (e) => {
   }
 });
 
-// ============ ESCALADO RESPONSIVE (debounced) ============
-let resizeTimer;
-function applyResponsiveScale() {
+// ============ ESCALADO RESPONSIVE ============
+function setResponsiveSizes() {
   const w = window.innerWidth;
   const h = window.innerHeight;
-  const minDim = Math.min(w, h);
-  let scale = minDim / 1450;
-  scale = Math.max(0.25, Math.min(1, scale));
-  els.systemContent.style.transform = `scale(${scale})`;
+  // Original orbit radii: mercury:100 venus:155 earth:215 mars:280 jupiter:380 saturn:480 uranus:570 neptune:660
+  const originalRadii = [100, 155, 215, 280, 380, 480, 570, 660];
+  const maxW = Math.min(w, h) - 40;
+  const factor = Math.min(1, maxW / (660 * 2));
+  document.querySelectorAll('.orbit[data-planet]').forEach(o => {
+    const key = o.dataset.planet;
+    const idx = planetKeys.indexOf(key);
+    if (idx !== -1) {
+      const newR = Math.round(originalRadii[idx] * factor);
+      o.style.setProperty('--radius', `${newR}px`);
+    }
+  });
 }
-applyResponsiveScale();
 
 // ============ CONSTELACIONES (88 constelaciones IAU) ============
 const constellations = [
@@ -1654,10 +1653,12 @@ function drawConstellations() {
 }
 
 drawConstellations();
+setResponsiveSizes();
+let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
-    applyResponsiveScale();
+    setResponsiveSizes();
     if (options.constellations) drawConstellations();
   }, 100);
 });

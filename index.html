@@ -18,6 +18,7 @@ html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;
 /* ========== FONDO ========== */
 #solar-system{
   position:relative;width:100%;height:100vh;height:calc(var(--vh,1vh)*100);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
   background:
     radial-gradient(ellipse at 20% 50%, rgba(40,0,80,0.3) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(0,20,80,0.25) 0%, transparent 50%),
@@ -86,6 +87,7 @@ html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;
   border:1px dashed rgba(255,255,255,0.1);
   animation:spin calc(var(--period) / var(--speed)) linear infinite;
   transform-origin:center center;
+  will-change:transform;
   -webkit-transform-origin:center center;
 }
 .orbit:hover{border-color:rgba(255,255,255,0.25);}
@@ -388,6 +390,8 @@ html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;
 .blackhole-marker:hover .blackhole-label{color:rgba(255,160,80,0.9);}
 
 /* ========== PANEL DE CONTROLES ========== */
+#controls .controls-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+#controls .controls-close{display:none;}
 #controls{
   position:fixed;top:16px;left:16px;z-index:100;
   background:rgba(8,8,28,0.95);
@@ -401,7 +405,7 @@ html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;
   -webkit-overflow-scrolling:touch;
 }
 #controls h2{
-  font-size:13px;font-weight:600;margin-bottom:16px;
+  font-size:13px;font-weight:600;
   letter-spacing:1px;text-transform:uppercase;
   color:rgba(255,255,255,0.9);
   display:flex;align-items:center;gap:8px;
@@ -565,37 +569,44 @@ input[type=range]::-webkit-slider-thumb{
   #controls-overlay.open{opacity:1;pointer-events:auto;}
 
   #controls-toggle{
-    display:flex;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99;
-    width:52px;height:52px;border-radius:50%;
+    display:flex;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99;
+    height:48px;border-radius:24px;
+    padding:0 20px;gap:8px;
     background:rgba(15,15,40,0.95);border:1px solid rgba(255,255,255,0.15);
     align-items:center;justify-content:center;
-    font-size:22px;cursor:pointer;box-shadow:0 4px 24px rgba(0,0,0,0.6);
+    font-size:14px;font-weight:600;letter-spacing:0.5px;
+    color:#8cc4ff;cursor:pointer;box-shadow:0 4px 24px rgba(0,0,0,0.6);
     transition:transform 0.2s;
   }
-  #controls-toggle:active{transform:translateX(-50%) scale(0.92);}
+  #controls-toggle::before{content:'☰';font-size:18px;}
+  #controls-toggle:active{transform:translateX(-50%) scale(0.95);}
   #controls-toggle.hidden{display:none;}
 
   #controls{
     position:fixed;bottom:0;left:0;right:0;top:auto;z-index:99;
-    width:100%;border-radius:18px 18px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));
-    max-height:70vh;overflow-y:auto;
+    width:100%;border-radius:20px 20px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+    max-height:75vh;overflow-y:auto;
     background:rgba(10,10,35,0.98);
     border:1px solid rgba(255,255,255,0.06);
     border-bottom:none;
     box-shadow:0 -8px 40px rgba(0,0,0,0.5);
-    transform:translateY(calc(100% + 20px));
+    transform:translateY(calc(100% + 40px));
     transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);
     scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
   }
-  #controls::before{
-    content:'';position:sticky;top:0;display:block;
-    width:40px;height:4px;border-radius:2px;
-    background:rgba(255,255,255,0.15);margin:0 auto 16px;
+  #controls .controls-header{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;
   }
+  #controls .controls-close{
+    width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);
+    border:none;color:rgba(255,255,255,0.6);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  #controls .controls-close:active{background:rgba(255,255,255,0.15);}
   #controls.open{transform:translateY(0);}
 
-  #controls h2{font-size:15px;margin-bottom:14px;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  #controls h2 span{font-size:18px;}
+  #controls h2{font-size:16px;font-weight:600;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #controls h2 span{font-size:20px;}
   .ctrl-section{margin-bottom:14px;}
   .ctrl-section > label{font-size:10px;margin-bottom:6px;padding-bottom:4px;}
 
@@ -769,14 +780,14 @@ input[type=range]::-webkit-slider-thumb{
 </div>
 </div>
 
-<button id="menu-toggle" aria-label="Abrir menú" style="display:none!important">
-  <span></span><span></span><span></span>
-</button>
 <div id="controls-overlay" onclick="toggleMobileControls()"></div>
-<button id="controls-toggle" onclick="toggleMobileControls()">☀</button>
+<button id="controls-toggle" onclick="toggleMobileControls()">Menú</button>
 
 <div id="controls">
-  <h2><span>☀</span> Sistema Solar</h2>
+  <div class="controls-header">
+    <h2><span>☀</span> Sistema Solar</h2>
+    <button class="controls-close" onclick="toggleMobileControls()">✕</button>
+  </div>
   <div class="ctrl-section">
     <label>Reproducción</label>
     <div class="btn-group">
@@ -1017,6 +1028,12 @@ let currentFollowing = null;
 let followRaf = null;
 let trackSkip = false;
 const options = { orbits: true, labels: true, asteroids: true, constellations: true };
+
+// En móvil, abrir todas las categorías por defecto
+if (window.innerWidth <= 768) {
+  document.querySelectorAll('.cat-list').forEach(l => l.classList.add('open'));
+  document.querySelectorAll('.cat-header').forEach(h => h.classList.add('open'));
+}
 
 // ============ MÓVIL: BOTTOM SHEET ============
 function toggleMobileControls() {
@@ -1500,10 +1517,21 @@ els.solarSystem.addEventListener('click', (e) => {
 });
 
 // ============ ESCALADO RESPONSIVE ============
+function applyResponsiveScale() {
+  if (window.innerWidth <= 768) return;
+  const minDim = Math.min(window.innerWidth, window.innerHeight);
+  let scale = minDim / 1450;
+  scale = Math.max(0.25, Math.min(1, scale));
+  els.systemContent.style.transform = `scale(${scale})`;
+  // Restore original orbit sizes
+  document.querySelectorAll('.orbit[data-planet]').forEach(o => o.style.removeProperty('--radius'));
+}
+
 function setResponsiveSizes() {
+  if (window.innerWidth > 768) return;
+  els.systemContent.style.transform = 'none';
   const w = window.innerWidth;
   const h = window.innerHeight;
-  // Original orbit radii: mercury:100 venus:155 earth:215 mars:280 jupiter:380 saturn:480 uranus:570 neptune:660
   const originalRadii = [100, 155, 215, 280, 380, 480, 570, 660];
   const maxW = Math.min(w, h) - 40;
   const factor = Math.min(1, maxW / (660 * 2));
@@ -1511,8 +1539,7 @@ function setResponsiveSizes() {
     const key = o.dataset.planet;
     const idx = planetKeys.indexOf(key);
     if (idx !== -1) {
-      const newR = Math.round(originalRadii[idx] * factor);
-      o.style.setProperty('--radius', `${newR}px`);
+      o.style.setProperty('--radius', `${Math.round(originalRadii[idx] * factor)}px`);
     }
   });
 }
@@ -1654,10 +1681,14 @@ function drawConstellations() {
 
 drawConstellations();
 setResponsiveSizes();
+if (window.innerWidth > 768) {
+  applyResponsiveScale();
+}
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
+    if (window.innerWidth > 768) applyResponsiveScale();
     setResponsiveSizes();
     if (options.constellations) drawConstellations();
   }, 100);

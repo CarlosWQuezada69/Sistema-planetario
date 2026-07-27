@@ -1518,30 +1518,11 @@ els.solarSystem.addEventListener('click', (e) => {
 
 // ============ ESCALADO RESPONSIVE ============
 function applyResponsiveScale() {
-  if (window.innerWidth <= 768) return;
   const minDim = Math.min(window.innerWidth, window.innerHeight);
   let scale = minDim / 1450;
   scale = Math.max(0.25, Math.min(1, scale));
   els.systemContent.style.transform = `scale(${scale})`;
-  // Restore original orbit sizes
   document.querySelectorAll('.orbit[data-planet]').forEach(o => o.style.removeProperty('--radius'));
-}
-
-function setResponsiveSizes() {
-  if (window.innerWidth > 768) return;
-  els.systemContent.style.transform = 'none';
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const originalRadii = [100, 155, 215, 280, 380, 480, 570, 660];
-  const maxW = Math.min(w, h) - 40;
-  const factor = Math.min(1, maxW / (660 * 2));
-  document.querySelectorAll('.orbit[data-planet]').forEach(o => {
-    const key = o.dataset.planet;
-    const idx = planetKeys.indexOf(key);
-    if (idx !== -1) {
-      o.style.setProperty('--radius', `${Math.round(originalRadii[idx] * factor)}px`);
-    }
-  });
 }
 
 // ============ CONSTELACIONES (88 constelaciones IAU) ============
@@ -1680,16 +1661,12 @@ function drawConstellations() {
 }
 
 drawConstellations();
-setResponsiveSizes();
-if (window.innerWidth > 768) {
-  applyResponsiveScale();
-}
+applyResponsiveScale();
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
-    if (window.innerWidth > 768) applyResponsiveScale();
-    setResponsiveSizes();
+    applyResponsiveScale();
     if (options.constellations) drawConstellations();
   }, 100);
 });

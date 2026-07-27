@@ -1125,10 +1125,7 @@ function onPlanetClick(key) {
   const orbit = document.querySelector(`[data-planet="${key}"]`);
   if (orbit) {
     const radius = parseFloat(orbit.style.getPropertyValue('--radius'));
-    const period = parseFloat(orbit.style.getPropertyValue('--period'));
-    const now = performance.now() / 1000;
-    const effectivePeriod = period / currentSpeed;
-    const angle = ((now / effectivePeriod) % 1) * 2 * Math.PI;
+    const angle = getCurrentAngle(orbit);
     const offsetX = Math.sin(angle) * radius * currentSystemScale;
     const offsetY = -Math.cos(angle) * radius * currentSystemScale;
     els.solarSystem.style.transition = 'transform 0.3s ease';
@@ -1152,10 +1149,7 @@ function onAsteroidClick(key) {
   const orbit = document.querySelector(`[data-planet="${key}"]`);
   if (orbit) {
     const radius = parseFloat(orbit.style.getPropertyValue('--radius'));
-    const period = parseFloat(orbit.style.getPropertyValue('--period'));
-    const now = performance.now() / 1000;
-    const effectivePeriod = period / currentSpeed;
-    const angle = ((now / effectivePeriod) % 1) * 2 * Math.PI;
+    const angle = getCurrentAngle(orbit);
     const offsetX = Math.sin(angle) * radius * currentSystemScale;
     const offsetY = -Math.cos(angle) * radius * currentSystemScale;
     els.solarSystem.style.transition = 'transform 0.3s ease';
@@ -1178,10 +1172,11 @@ function onStarClick(key) {
   highlightBtn(key);
   const starEl = document.querySelector(`.famous-star[onclick*="${key}"]`);
   if (starEl) {
-    const tx = window.innerWidth / 2 - starEl.offsetLeft;
-    const ty = window.innerHeight / 2 - starEl.offsetTop;
+    const r = starEl.getBoundingClientRect();
+    const offsetX = r.left + r.width/2 - window.innerWidth/2;
+    const offsetY = r.top + r.height/2 - window.innerHeight/2;
     els.solarSystem.style.transition = 'transform 0.5s ease';
-    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${tx / ZOOM_FOLLOW}px, ${ty / ZOOM_FOLLOW}px)`;
+    setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
     setTimeout(() => { els.solarSystem.style.transition = ''; }, 550);
@@ -1196,10 +1191,11 @@ function onBlackholeClick(key) {
   highlightBtn(key);
   const bhEl = document.querySelector(`.blackhole-marker[onclick*="${key}"]`);
   if (bhEl) {
-    const tx = window.innerWidth / 2 - bhEl.offsetLeft;
-    const ty = window.innerHeight / 2 - bhEl.offsetTop;
+    const r = bhEl.getBoundingClientRect();
+    const offsetX = r.left + r.width/2 - window.innerWidth/2;
+    const offsetY = r.top + r.height/2 - window.innerHeight/2;
     els.solarSystem.style.transition = 'transform 0.5s ease';
-    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${tx / ZOOM_FOLLOW}px, ${ty / ZOOM_FOLLOW}px)`;
+    setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
     setTimeout(() => { els.solarSystem.style.transition = ''; }, 550);
@@ -1219,10 +1215,8 @@ function onConstellationClick(name) {
     const w = window.innerWidth;
     const h = window.innerHeight;
     const spread = Math.min(w, h) * 0.55;
-    const screenX = w / 2 + avgX * spread;
-    const screenY = h / 2 + avgY * spread;
-    const offsetX = screenX - w / 2;
-    const offsetY = screenY - h / 2;
+    const offsetX = avgX * spread * currentSystemScale;
+    const offsetY = avgY * spread * currentSystemScale;
     els.solarSystem.style.transition = 'transform 0.5s ease';
     setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
@@ -1270,16 +1264,26 @@ function stopFollowing() {
   setTimeout(() => { els.solarSystem.style.transition = ''; }, 650);
 }
 
+function getCurrentAngle(orbit) {
+  const animations = orbit.getAnimations();
+  if (animations.length > 0) {
+    const anim = animations[0];
+    const ct = anim.currentTime;
+    const dur = anim.effect.getComputedTiming().duration;
+    if (ct !== null && dur > 0) return ((ct % dur) / dur) * 2 * Math.PI;
+  }
+  const period = parseFloat(orbit.style.getPropertyValue('--period'));
+  const now = performance.now() / 1000;
+  return ((now / (period / currentSpeed)) % 1) * 2 * Math.PI;
+}
+
 function trackPlanetLoop() {
   if (!currentFollowing) { followRaf = null; return; }
   const orbit = document.querySelector(`[data-planet="${currentFollowing}"]`);
   if (!orbit) { followRaf = null; return; }
 
   const radius = parseFloat(orbit.style.getPropertyValue('--radius'));
-  const period = parseFloat(orbit.style.getPropertyValue('--period'));
-  const now = performance.now() / 1000;
-  const effectivePeriod = period / currentSpeed;
-  const angle = ((now / effectivePeriod) % 1) * 2 * Math.PI;
+  const angle = getCurrentAngle(orbit);
 
   const offsetX = Math.sin(angle) * radius * currentSystemScale;
   const offsetY = -Math.cos(angle) * radius * currentSystemScale;
@@ -1470,6 +1474,15 @@ els.solarSystem.addEventListener('click', (e) => {
       e.target.closest('.famous-star') || e.target.closest('.blackhole-marker') ||
       e.target.closest('#info-panel')) return;
   stopFollowing();
+});
+
+// On mobile, click on orbit ring activates the planet
+document.addEventListener('click', (e) => {
+  if (window.innerWidth > 768) return;
+  const orbit = e.target.closest('.orbit[data-planet]');
+  if (orbit && !e.target.closest('.planet')) {
+    onPlanetClick(orbit.dataset.planet);
+  }
 });
 
 // ============ PANEL DE INFO ============

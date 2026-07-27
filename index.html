@@ -559,6 +559,7 @@ input[type=range]::-webkit-slider-thumb{
 #controls-toggle,#controls-overlay{display:none;}
 
 @media(max-width:768px){
+  #controls-toggle,#controls-overlay,#controls{display:none!important;}
   #controls-overlay{
     display:block;position:fixed;inset:0;z-index:98;
     background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;
@@ -1019,6 +1020,7 @@ constKeys.forEach(k => createItem(cBtns, k, k, onConstellationClick, constellati
 // ============ ESTADO ============
 let isPlaying = true;
 let currentSpeed = 1;
+let currentSystemScale = 1;
 let currentZoom = 1;
 let currentFollowing = null;
 let followRaf = null;
@@ -1122,9 +1124,13 @@ function onPlanetClick(key) {
   highlightBtn(key);
   const orbit = document.querySelector(`[data-planet="${key}"]`);
   if (orbit) {
-    const rect = orbit.getBoundingClientRect();
-    const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
-    const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
+    const radius = parseFloat(orbit.style.getPropertyValue('--radius'));
+    const period = parseFloat(orbit.style.getPropertyValue('--period'));
+    const now = performance.now() / 1000;
+    const effectivePeriod = period / currentSpeed;
+    const angle = ((now / effectivePeriod) % 1) * 2 * Math.PI;
+    const offsetX = Math.sin(angle) * radius * currentSystemScale;
+    const offsetY = -Math.cos(angle) * radius * currentSystemScale;
     els.solarSystem.style.transition = 'transform 0.3s ease';
     setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
@@ -1145,9 +1151,13 @@ function onAsteroidClick(key) {
   highlightBtn(key);
   const orbit = document.querySelector(`[data-planet="${key}"]`);
   if (orbit) {
-    const rect = orbit.getBoundingClientRect();
-    const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
-    const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
+    const radius = parseFloat(orbit.style.getPropertyValue('--radius'));
+    const period = parseFloat(orbit.style.getPropertyValue('--period'));
+    const now = performance.now() / 1000;
+    const effectivePeriod = period / currentSpeed;
+    const angle = ((now / effectivePeriod) % 1) * 2 * Math.PI;
+    const offsetX = Math.sin(angle) * radius * currentSystemScale;
+    const offsetY = -Math.cos(angle) * radius * currentSystemScale;
     els.solarSystem.style.transition = 'transform 0.3s ease';
     setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
@@ -1265,17 +1275,16 @@ function trackPlanetLoop() {
   const orbit = document.querySelector(`[data-planet="${currentFollowing}"]`);
   if (!orbit) { followRaf = null; return; }
 
-  // Throttle: solo leer layout cada 4 frames (~15fps) para evitar layout thrashing
-  if (trackSkip < 3) { trackSkip++; followRaf = requestAnimationFrame(trackPlanetLoop); return; }
-  trackSkip = 0;
+  const radius = parseFloat(orbit.style.getPropertyValue('--radius'));
+  const period = parseFloat(orbit.style.getPropertyValue('--period'));
+  const now = performance.now() / 1000;
+  const effectivePeriod = period / currentSpeed;
+  const angle = ((now / effectivePeriod) % 1) * 2 * Math.PI;
 
-  const rect = orbit.getBoundingClientRect();
-  const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
-  const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
-  const tx = -offsetX / ZOOM_FOLLOW;
-  const ty = -offsetY / ZOOM_FOLLOW;
+  const offsetX = Math.sin(angle) * radius * currentSystemScale;
+  const offsetY = -Math.cos(angle) * radius * currentSystemScale;
 
-  setTransform(ZOOM_FOLLOW, tx, ty);
+  setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
   currentZoom = ZOOM_FOLLOW;
   els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
   followRaf = requestAnimationFrame(trackPlanetLoop);
@@ -1453,6 +1462,16 @@ infoPanel.addEventListener('touchend', (e) => {
   }
 }, { passive: true });
 
+// On mobile, tap empty space to stop following
+els.solarSystem.addEventListener('click', (e) => {
+  if (window.innerWidth > 768) return;
+  if (!currentFollowing) return;
+  if (e.target.closest('.planet') || e.target.closest('.famous-asteroid') ||
+      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker') ||
+      e.target.closest('#info-panel')) return;
+  stopFollowing();
+});
+
 // ============ PANEL DE INFO ============
 function showInfo(key, category) {
   let d, fields;
@@ -1517,6 +1536,7 @@ function applyResponsiveScale() {
   const minDim = Math.min(window.innerWidth, window.innerHeight);
   let scale = minDim / 1450;
   scale = Math.max(0.25, Math.min(1, scale));
+  currentSystemScale = scale;
   els.systemContent.style.transform = `scale(${scale})`;
 }
 

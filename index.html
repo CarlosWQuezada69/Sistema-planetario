@@ -560,6 +560,7 @@ input[type=range]::-webkit-slider-thumb{
 
 @media(max-width:768px){
   #controls-toggle,#controls-overlay,#controls{display:none!important;}
+  #solar-system,.orbit,.planet,.famous-asteroid,.famous-star,.blackhole-marker{touch-action:manipulation;}
   #controls-overlay{
     display:block;position:fixed;inset:0;z-index:98;
     background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;
@@ -630,11 +631,16 @@ input[type=range]::-webkit-slider-thumb{
   .cat-list-inner{padding:8px 0 6px 4px;}
   .cat-item{padding:10px 12px;border-radius:8px;font-size:13px;gap:10px;min-height:40px;}
 
-  #zoom-indicator{bottom:80px;left:50%;transform:translateX(-50%);font-size:10px;padding:4px 10px;border-radius:16px;white-space:nowrap;}
+  #zoom-indicator{bottom:20px;left:16px;font-size:10px;padding:4px 10px;border-radius:16px;white-space:nowrap;transform:none;}
+  #mobile-follow-bar{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:90;gap:8px;align-items:center;background:rgba(8,8,28,0.9);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:4px 12px 4px 14px;font-size:11px;}
+  #mobile-follow-bar.show{display:flex;}
+  #mobile-follow-name{color:rgba(255,255,255,0.7);}
+  #mobile-reset-btn{background:none;border:none;color:#8cc4ff;font-size:16px;cursor:pointer;padding:2px 4px;line-height:1;}
   .star-container{pointer-events:none;}
   .star.twinkle{animation:none;}
+  .planet:active,.famous-asteroid:active,.famous-star:active,.blackhole-marker:active{filter:brightness(2);outline:2px solid rgba(255,255,255,0.5);outline-offset:2px;}
 
-  #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:16px 16px 0 0;max-height:55vh;padding:14px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;}
+  #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:16px 16px 0 0;max-height:35vh;padding:14px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;}
   #info-panel.visible{transform:translateY(0);}
   .info-handle{display:block;height:3px;width:32px;margin-bottom:8px;border-radius:2px;}
   #info-panel h3{font-size:15px;margin-bottom:2px;}
@@ -662,8 +668,18 @@ input[type=range]::-webkit-slider-thumb{
   #info-panel{padding-bottom:calc(12px + env(safe-area-inset-bottom));}
 }
 </style>
+<style>
+  #loader{position:fixed;inset:0;z-index:9999;background:#05050f;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity 0.6s;}
+  #loader.hide{opacity:0;pointer-events:none;}
+  #loader .spinner{width:32px;height:32px;border:2px solid rgba(255,255,255,0.08);border-top-color:#8cc4ff;border-radius:50%;animation:loadspin 0.8s linear infinite;}
+  @keyframes loadspin{to{transform:rotate(360deg);}}
+  #loader p{font-size:12px;color:rgba(255,255,255,0.3);margin:0;}
+  @media(max-width:768px){#loader p{font-size:10px;}}
+</style>
 </head>
 <body>
+
+<div id="loader"><div class="spinner"></div><p>Cargando sistema solar…</p></div>
 
 <div id="solar-system">
 <div class="system-content">
@@ -849,6 +865,7 @@ input[type=range]::-webkit-slider-thumb{
 </div>
 
 <div id="zoom-indicator">Zoom: 100%</div>
+<div id="mobile-follow-bar"><span id="mobile-follow-name"></span><button id="mobile-reset-btn" onclick="resetView()">↺</button></div>
 
 <script>
 // ============ CACHE DE DOM ============
@@ -942,37 +959,41 @@ const constellationInfo = {
   'Águila':{color:'#44ccff',type:'Constelación del ecuador',stars:'5 principales',bestMonth:'Agosto',area:'652 grados²',fact:'<strong>Dato curioso:</strong> Águila contiene a Altair, una de las estrellas más cercanas al Sol (16.7 años luz) y punto del Triángulo de Verano.'}
 };
 
-// ============ GENERAR ESTRELLAS (reducido en móvil) ============
+// ============ GENERAR ESTRELLAS (diferido para no bloquear) ============
 const isMobile = window.innerWidth <= 768;
 const starCount = isMobile ? 80 : 200;
-const starFrag = document.createDocumentFragment();
-for (let i = 0; i < starCount; i++) {
-  const s = document.createElement('span');
-  s.className = 'star';
-  const size = Math.random() < 0.7 ? 1 : (Math.random() < 0.85 ? 1.5 : 2.5);
-  const colors = ['#fff','#fff','#fff','#dde8ff','#fff5cc','#ffeedd'];
-  s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};opacity:${0.2+Math.random()*0.6};`;
-  if (Math.random() < 0.35) {
-    s.classList.add('twinkle');
-    s.style.animationDuration = `${2+Math.random()*5}s`;
-    s.style.animationDelay = `${Math.random()*5}s`;
+(requestIdleCallback || setTimeout)(() => {
+  const starFrag = document.createDocumentFragment();
+  for (let i = 0; i < starCount; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    const size = Math.random() < 0.7 ? 1 : (Math.random() < 0.85 ? 1.5 : 2.5);
+    const colors = ['#fff','#fff','#fff','#dde8ff','#fff5cc','#ffeedd'];
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};opacity:${0.2+Math.random()*0.6};`;
+    if (Math.random() < 0.35) {
+      s.classList.add('twinkle');
+      s.style.animationDuration = `${2+Math.random()*5}s`;
+      s.style.animationDelay = `${Math.random()*5}s`;
+    }
+    starFrag.appendChild(s);
   }
-  starFrag.appendChild(s);
-}
-els.starContainer.appendChild(starFrag);
+  els.starContainer.appendChild(starFrag);
+}, {timeout:2000});
 
-// ============ GENERAR ASTEROIDES (reducido en móvil) ============
-const asteroidCount = isMobile ? 15 : 30;
-const astFrag = document.createDocumentFragment();
-for (let i = 0; i < asteroidCount; i++) {
-  const a = document.createElement('div');
-  const cls = ['','dark','bright'];
-  a.className = `asteroid ${cls[Math.floor(Math.random()*3)]}`;
-  const size = 2 + Math.random() * 3;
-  a.style.cssText = `left:${Math.random()*100}%;top:${30+Math.random()*40}%;width:${size}px;height:${size}px;animation-duration:${15+Math.random()*30}s;animation-delay:${-Math.random()*30}s;opacity:${0.3+Math.random()*0.5};`;
-  astFrag.appendChild(a);
-}
-els.asteroidBelt.appendChild(astFrag);
+// ============ GENERAR ASTEROIDES (diferido) ============
+(requestIdleCallback || setTimeout)(() => {
+  const asteroidCount = isMobile ? 15 : 30;
+  const astFrag = document.createDocumentFragment();
+  for (let i = 0; i < asteroidCount; i++) {
+    const a = document.createElement('div');
+    const cls = ['','dark','bright'];
+    a.className = `asteroid ${cls[Math.floor(Math.random()*3)]}`;
+    const size = 2 + Math.random() * 3;
+    a.style.cssText = `left:${Math.random()*100}%;top:${30+Math.random()*40}%;width:${size}px;height:${size}px;animation-duration:${15+Math.random()*30}s;animation-delay:${-Math.random()*30}s;opacity:${0.3+Math.random()*0.5};`;
+    astFrag.appendChild(a);
+  }
+  els.asteroidBelt.appendChild(astFrag);
+}, {timeout:3000});
 
 // ============ BOTONES POR CATEGORÍA ============
 function createItem(container, name, key, clickFn, color) {
@@ -1024,7 +1045,6 @@ let currentSystemScale = 1;
 let currentZoom = 1;
 let currentFollowing = null;
 let followRaf = null;
-let trackSkip = 0;
 const options = { orbits: true, labels: true, asteroids: true, constellations: true };
 
 // En móvil, abrir todas las categorías por defecto
@@ -1255,6 +1275,7 @@ function stopFollowing() {
   if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
   document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('focused'));
   document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
+  document.getElementById('mobile-follow-bar')?.classList.remove('show');
   els.solarSystem.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
   panX = 0; panY = 0;
   els.solarSystem.style.transform = 'scale(1) translate(0px, 0px)';
@@ -1528,6 +1549,10 @@ function showInfo(key, category) {
   els.infoData.innerHTML = fields.map(([l,v]) => `<div class="data-item"><div class="data-label">${l}</div><div class="data-value">${v}</div></div>`).join('');
   els.infoFact.innerHTML = d.fact || '';
   els.infoPanel.classList.add('visible');
+  if (window.innerWidth <= 768) {
+    document.getElementById('mobile-follow-name').textContent = 'Siguiendo: ' + d.name;
+    document.getElementById('mobile-follow-bar').classList.add('show');
+  }
 }
 
 function closeInfo() {
@@ -1691,6 +1716,7 @@ function drawConstellations() {
 
 drawConstellations();
 applyResponsiveScale();
+document.getElementById('loader')?.classList.add('hide');
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);

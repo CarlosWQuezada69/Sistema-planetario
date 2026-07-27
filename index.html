@@ -12,12 +12,12 @@
 <title>Sistema Solar - Simulación Interactiva</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--speed:1;--vh:1vh;}
-html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
+:root{--speed:1;}
+html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
 
 /* ========== FONDO ========== */
 #solar-system{
-  position:relative;width:100%;height:100vh;height:calc(var(--vh,1vh)*100);
+  position:relative;width:100vw;height:100vh;
   background:
     radial-gradient(ellipse at 20% 50%, rgba(40,0,80,0.3) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(0,20,80,0.25) 0%, transparent 50%),
@@ -1692,13 +1692,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowUp') { setTransform(currentZoom, panX, panY - panStep); e.preventDefault(); }
   if (e.key === 'ArrowDown') { setTransform(currentZoom, panX, panY + panStep); e.preventDefault(); }
 });
-
-// ============ SAFARI VIEWPORT HEIGHT FIX ============
-function setVH() {
-  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-}
-setVH();
-window.addEventListener('resize', setVH);
 
 // ============ SERVICE WORKER ============
 if ('serviceWorker' in navigator) {

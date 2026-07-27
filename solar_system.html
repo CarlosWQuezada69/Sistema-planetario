@@ -55,21 +55,21 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, transparent 25%),
     radial-gradient(circle at 40% 40%, #fff700 0%, #ffaa00 30%, #ff6600 60%, #cc3300 85%, #801a00 100%);
   box-shadow:
-    0 0 20px 8px rgba(255,220,80,0.7),
-    0 0 50px 15px rgba(255,180,0,0.5),
-    0 0 90px 30px rgba(255,120,0,0.3),
-    0 0 140px 50px rgba(255,80,0,0.15),
+    0 0 30px 12px rgba(255,220,80,0.7),
+    0 0 70px 20px rgba(255,180,0,0.5),
+    0 0 120px 40px rgba(255,120,0,0.3),
+    0 0 180px 60px rgba(255,80,0,0.15),
     inset -8px -8px 20px rgba(180,50,0,0.4);
   animation:sun-pulse 4s ease-in-out infinite;
   contain:layout style paint;
 }
 .sun::before{
-  content:'';position:absolute;inset:-20px;border-radius:50%;z-index:-1;
+  content:'';position:absolute;inset:-25px;border-radius:50%;z-index:-1;
   background:radial-gradient(circle,rgba(255,200,50,0.25) 0%,transparent 65%);
   animation:corona 3s ease-in-out infinite alternate;
 }
 .sun::after{
-  content:'';position:absolute;inset:-50px;border-radius:50%;z-index:-2;
+  content:'';position:absolute;inset:-60px;border-radius:50%;z-index:-2;
   background:radial-gradient(circle,rgba(255,150,0,0.08) 0%,transparent 55%);
 }
 @keyframes sun-pulse{
@@ -102,11 +102,9 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   left:50%;top:calc(-1 * var(--size)/2);
   transform:translateX(-50%);
   will-change:transform;
-  contain:layout style;
 }
-/* Brillo hover sin filter costoso */
-.planet:hover{box-shadow:0 0 14px 5px var(--glow);transform:translateX(-50%) scale(1.25);}
-.planet.selected{box-shadow:0 0 18px 7px var(--glow);transform:translateX(-50%) scale(1.35);}
+.planet:hover{box-shadow:0 0 20px 8px var(--glow);transform:translateX(-50%) scale(1.25);}
+.planet.selected{box-shadow:0 0 26px 11px var(--glow);transform:translateX(-50%) scale(1.35);}
 
 /* Etiquetas */
 .planet-label{
@@ -132,8 +130,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.5) 0%, transparent 55%),
     radial-gradient(circle at 40% 35%, #c8c8c8, #909090 45%, #606060 80%, #3a3a3a);
   box-shadow:
-    0 0 6px 2px rgba(180,180,180,0.25),
-    inset -2px -2px 4px rgba(0,0,0,0.5),
+    0 0 8px 3px rgba(180,180,180,0.25),
+    inset -3px -3px 5px rgba(0,0,0,0.5),
     inset 1px 1px 2px rgba(255,255,255,0.15);
 }
 
@@ -146,7 +144,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.45) 0%, transparent 50%),
     radial-gradient(circle at 40% 35%, #f0d890, #e0b050 40%, #c49232 75%, #8a6420);
   box-shadow:
-    0 0 8px 3px rgba(230,180,80,0.25),
+    0 0 10px 4px rgba(230,180,80,0.25),
     inset -3px -3px 6px rgba(0,0,0,0.4),
     inset 1px 1px 3px rgba(255,255,255,0.2);
 }
@@ -164,18 +162,18 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 75% 75%, rgba(0,0,30,0.45) 0%, transparent 50%),
     radial-gradient(circle at 40% 35%, #5cc8ff, #1e90ff 40%, #0066cc 75%, #003366);
   box-shadow:
-    0 0 10px 3px rgba(30,144,255,0.35),
+    0 0 13px 5px rgba(30,144,255,0.35),
     inset -3px -3px 6px rgba(0,0,0,0.4),
     inset 1px 1px 3px rgba(255,255,255,0.2);
 }
 /* Luna */
 .earth .moon-orbit{
-  position:absolute;width:30px;height:30px;
-  left:calc(50% - 15px);top:calc(50% - 15px);
+  position:absolute;width:36px;height:36px;
+  left:calc(50% - 18px);top:calc(50% - 18px);
   animation:spin calc(2.5s / var(--speed)) linear infinite;
 }
 .earth .moon{
-  position:absolute;width:5px;height:5px;border-radius:50%;
+  position:absolute;width:6px;height:6px;border-radius:50%;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.4) 0%, transparent 40%),
     radial-gradient(circle at 70% 70%, rgba(0,0,0,0.4) 0%, transparent 50%),
@@ -193,7 +191,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.5) 0%, transparent 50%),
     radial-gradient(circle at 40% 35%, #e88060, #cd5c5c 40%, #a04030 70%, #6b2a1a);
   box-shadow:
-    0 0 8px 3px rgba(200,80,50,0.25),
+    0 0 10px 4px rgba(200,80,50,0.25),
     inset -2px -2px 5px rgba(0,0,0,0.5),
     inset 1px 1px 2px rgba(255,255,255,0.15);
 }
@@ -207,10 +205,10 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 35%),
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.4) 0%, transparent 50%),
     #c49232;
-  box-shadow:
-    0 0 15px 5px rgba(218,165,32,0.25),
-    inset -5px -5px 12px rgba(0,0,0,0.35),
-    inset 2px 2px 4px rgba(255,255,255,0.1);
+   box-shadow:
+     0 0 20px 7px rgba(218,165,32,0.25),
+     inset -6px -6px 14px rgba(0,0,0,0.35),
+     inset 2px 2px 5px rgba(255,255,255,0.1);
 }
 /* Bandas de Júpiter */
 .jupiter::before{
@@ -227,10 +225,10 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 }
 /* Gran mancha roja */
 .jupiter::after{
-  content:'';position:absolute;width:11px;height:7px;border-radius:50%;
+  content:'';position:absolute;width:13px;height:8px;border-radius:50%;
   background:radial-gradient(ellipse,#d04030,#a02010 60%,#701510);
-  bottom:13px;right:9px;opacity:0.85;
-  box-shadow:0 0 3px 1px rgba(180,50,30,0.3);
+  bottom:16px;right:11px;opacity:0.85;
+  box-shadow:0 0 4px 2px rgba(180,50,30,0.35);
 }
 
 /* --- SATURNO --- */
@@ -243,29 +241,29 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.35) 0%, transparent 45%),
     radial-gradient(circle at 40% 35%, #f5e6c8, #deb887 35%, #c4a265 70%, #8a7040);
   box-shadow:
-    0 0 12px 4px rgba(245,222,179,0.25),
-    inset -4px -4px 8px rgba(0,0,0,0.3),
+    0 0 16px 6px rgba(245,222,179,0.25),
+    inset -5px -5px 10px rgba(0,0,0,0.3),
     inset 1px 1px 3px rgba(255,255,255,0.15);
 }
 /* Anillos de Saturno - 3D */
 .saturn-rings{
   position:absolute;z-index:4;pointer-events:none;
   left:50%;top:50%;
-  width:64px;height:16px;
+  width:80px;height:20px;
   transform:translate(-50%,-50%) rotateX(78deg);
 }
 .saturn-rings::before{
   content:'';position:absolute;border-radius:50%;border-style:solid;
   left:50%;top:50%;transform:translate(-50%,-50%);
-  width:62px;height:62px;
-  border-width:5px;
+  width:78px;height:78px;
+  border-width:6px;
   border-color:rgba(200,170,110,0.55) rgba(200,170,110,0.2) rgba(200,170,110,0.55) rgba(200,170,110,0.2);
 }
 .saturn-rings::after{
   content:'';position:absolute;border-radius:50%;border-style:solid;
   left:50%;top:50%;transform:translate(-50%,-50%);
-  width:52px;height:52px;
-  border-width:3px;
+  width:65px;height:65px;
+  border-width:4px;
   border-color:rgba(220,190,130,0.45) rgba(220,190,130,0.15) rgba(220,190,130,0.45) rgba(220,190,130,0.15);
 }
 
@@ -278,13 +276,13 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.35) 0%, transparent 45%),
     radial-gradient(circle at 40% 35%, #c8f0f4, #64dce6 40%, #3aa8b0 75%, #1a7080);
   box-shadow:
-    0 0 10px 4px rgba(100,220,230,0.25),
-    inset -4px -4px 8px rgba(0,0,0,0.3),
+    0 0 14px 5px rgba(100,220,230,0.25),
+    inset -5px -5px 10px rgba(0,0,0,0.3),
     inset 1px 1px 3px rgba(255,255,255,0.2);
 }
 .uranus::before{
   content:'';position:absolute;
-  width:40px;height:5px;border-radius:50%;
+  width:50px;height:6px;border-radius:50%;
   left:50%;top:50%;transform:translate(-50%,-50%) rotateZ(80deg);
   border:2px solid rgba(150,230,240,0.25);
   pointer-events:none;
@@ -300,8 +298,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.4) 0%, transparent 45%),
     radial-gradient(circle at 40% 35%, #7090e8, #2850c8 40%, #1a3890 75%, #0a1850);
   box-shadow:
-    0 0 10px 4px rgba(40,80,200,0.3),
-    inset -4px -4px 8px rgba(0,0,0,0.35),
+    0 0 14px 5px rgba(40,80,200,0.3),
+    inset -5px -5px 10px rgba(0,0,0,0.35),
     inset 1px 1px 3px rgba(255,255,255,0.15);
 }
 
@@ -326,15 +324,14 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   left:50%;top:calc(-1 * var(--size)/2);
   transform:translateX(-50%);
   will-change:transform;
-  contain:layout style;
 }
-.famous-asteroid:hover{box-shadow:0 0 12px 4px var(--glow);transform:translateX(-50%) scale(1.4);}
-.famous-asteroid.selected{box-shadow:0 0 16px 6px var(--glow);transform:translateX(-50%) scale(1.5);}
+.famous-asteroid:hover{box-shadow:0 0 16px 6px var(--glow);transform:translateX(-50%) scale(1.4);}
+.famous-asteroid.selected{box-shadow:0 0 22px 9px var(--glow);transform:translateX(-50%) scale(1.5);}
 
-.ceres{--size:9px;--glow:rgba(180,180,180,0.5);width:9px;height:9px;background:radial-gradient(circle at 35% 35%,#d0d0d0,#909090 50%,#505050);box-shadow:0 0 4px 1px rgba(180,180,180,0.2);}
-.vesta{--size:8px;--glow:rgba(200,180,140,0.5);width:8px;height:8px;background:radial-gradient(circle at 35% 35%,#e8dcc8,#b0a080 50%,#706040);box-shadow:0 0 4px 1px rgba(200,180,140,0.2);}
+.ceres{--size:9px;--glow:rgba(180,180,180,0.5);width:9px;height:9px;background:radial-gradient(circle at 35% 35%,#d0d0d0,#909090 50%,#505050);box-shadow:0 0 5px 2px rgba(180,180,180,0.2);}
+.vesta{--size:8px;--glow:rgba(200,180,140,0.5);width:8px;height:8px;background:radial-gradient(circle at 35% 35%,#e8dcc8,#b0a080 50%,#706040);box-shadow:0 0 5px 2px rgba(200,180,140,0.2);}
 .pallas{--size:7px;--glow:rgba(170,160,140,0.5);width:7px;height:7px;background:radial-gradient(circle at 35% 35%,#c8c0b0,#908878 50%,#585048);box-shadow:0 0 4px 1px rgba(170,160,140,0.2);}
-.eros{--size:6px;--glow:rgba(190,170,150,0.5);width:6px;height:6px;background:radial-gradient(circle at 35% 35%,#d8c8b0,#a09070 50%,#605038);box-shadow:0 0 3px 1px rgba(190,170,150,0.2);}
+.eros{--size:6px;--glow:rgba(190,170,150,0.5);width:6px;height:6px;background:radial-gradient(circle at 35% 35%,#d8c8b0,#a09070 50%,#605038);box-shadow:0 0 4px 1px rgba(190,170,150,0.2);}
 
 /* ========== ESTRELLAS FAMOSAS ========== */
 .famous-star{
@@ -343,7 +340,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   transform:translate(-50%,-50%);
   transition:filter 0.3s;
 }
-.famous-star.selected .star-dot{width:15px;height:15px;box-shadow:0 0 16px 6px currentColor;animation:none;}
+.famous-star.selected .star-dot{width:15px;height:15px;box-shadow:0 0 24px 10px currentColor;animation:none;}
 .star-dot{
   width:8px;height:8px;border-radius:50%;
   animation:star-glow 3s ease-in-out infinite alternate;
@@ -355,7 +352,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   pointer-events:none;
 }
 .famous-star:hover .star-label{color:rgba(255,255,255,0.8);}
-@keyframes star-glow{0%{box-shadow:0 0 4px 1px currentColor;}100%{box-shadow:0 0 10px 3px currentColor;}}
+@keyframes star-glow{0%{box-shadow:0 0 6px 2px currentColor;}100%{box-shadow:0 0 14px 5px currentColor;}}
 
 .sirius{background:#e8f0ff;color:#e8f0ff;width:9px;height:9px;}
 .betelgeuse{background:#ff6030;color:#ff6030;width:12px;height:12px;}
@@ -374,19 +371,19 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   transform:translate(-50%,-50%);
   transition:filter 0.3s;
 }
-.blackhole-marker.selected .blackhole-dot{box-shadow:0 0 24px 8px rgba(255,120,0,0.6),0 0 50px 15px rgba(255,80,0,0.3);animation:none;}
+.blackhole-marker.selected .blackhole-dot{box-shadow:0 0 32px 12px rgba(255,120,0,0.6),0 0 60px 20px rgba(255,80,0,0.3);animation:none;}
 .blackhole-dot{
   width:17px;height:17px;border-radius:50%;
   background:radial-gradient(circle,#000 40%,rgba(255,120,0,0.6) 60%,rgba(255,60,0,0.2) 80%,transparent 100%);
-  box-shadow:0 0 12px 3px rgba(255,100,0,0.3),0 0 30px 6px rgba(255,60,0,0.1);
+  box-shadow:0 0 16px 5px rgba(255,100,0,0.3),0 0 40px 10px rgba(255,60,0,0.1);
   animation:accretion 4s linear infinite;
 }
 .blackhole-dot.sagittarius{width:22px;height:22px;}
 .blackhole-dot.m87{width:20px;height:20px;}
 @keyframes accretion{
-  0%{box-shadow:0 0 12px 3px rgba(255,100,0,0.3),0 0 30px 6px rgba(255,60,0,0.1);}
-  50%{box-shadow:0 0 18px 5px rgba(255,120,0,0.5),0 0 40px 10px rgba(255,80,0,0.2);}
-  100%{box-shadow:0 0 12px 3px rgba(255,100,0,0.3),0 0 30px 6px rgba(255,60,0,0.1);}
+  0%{box-shadow:0 0 16px 5px rgba(255,100,0,0.3),0 0 40px 10px rgba(255,60,0,0.1);}
+  50%{box-shadow:0 0 24px 8px rgba(255,120,0,0.5),0 0 55px 15px rgba(255,80,0,0.2);}
+  100%{box-shadow:0 0 16px 5px rgba(255,100,0,0.3),0 0 40px 10px rgba(255,60,0,0.1);}
 }
 .blackhole-label{
   font-size:8px;letter-spacing:1px;text-transform:uppercase;

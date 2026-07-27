@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Sistema Solar - Simulación Interactiva</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--speed:1;}
-html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;}
+:root{--speed:1;--vh:1vh;}
+html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
 
 /* ========== FONDO ========== */
 #solar-system{
@@ -18,12 +20,13 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(ellipse at 50% 80%, rgba(80,0,40,0.15) 0%, transparent 50%),
     #05050f;
   overflow:hidden;
-  transform-origin:center center;
-  will-change:transform;
+  transform-origin:center center;-webkit-transform-origin:center center;
+  will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+  touch-action:none;
 }
 #solar-system .system-content{
   position:absolute;inset:0;
-  transform-origin:center center;
+  transform-origin:center center;-webkit-transform-origin:center center;
   will-change:transform;
 }
 
@@ -83,6 +86,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   animation:spin calc(var(--period) / var(--speed)) linear infinite;
   transform-origin:center center;
   will-change:transform;
+  -webkit-transform-origin:center center;
 }
 .orbit:hover{border-color:rgba(255,255,255,0.25);}
 .orbit.paused{animation-play-state:paused;}
@@ -396,10 +400,10 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   border-radius:14px;padding:16px 14px;
   width:230px;
   box-shadow:0 8px 32px rgba(0,0,0,0.6);
-  contain:layout style;
   max-height:calc(100vh - 32px);
   overflow-y:auto;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
+  -webkit-overflow-scrolling:touch;
 }
 #controls h2{
   font-size:13px;font-weight:600;margin-bottom:16px;
@@ -571,20 +575,23 @@ input[type=range]::-webkit-slider-thumb{
 #menu-overlay.visible{display:block;}
 
 /* ========== RESPONSIVE ========== */
+@supports(height:100dvh){
+  #solar-system{height:100dvh;}
+}
 @media(max-width:768px){
   #menu-toggle{display:flex;}
   #controls{
-    position:fixed;top:0;left:0;height:100dvh;
+    position:fixed;top:0;left:0;height:100vh;height:100dvh;
     width:260px;border-radius:0 14px 14px 0;
     padding:65px 14px 24px;
-    transform:translateX(-110%);
-    transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    transform:translateX(-110%);-webkit-transform:translateX(-110%);
+    transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);-webkit-transition:-webkit-transform 0.35s cubic-bezier(0.4,0,0.2,1);
     overflow-y:auto;z-index:105;contain:none;
     -webkit-overflow-scrolling:touch;touch-action:pan-y;
-    overscroll-behavior:contain;
+    overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
     scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
   }
-  #controls.open{transform:translateX(0);}
+  #controls.open{transform:translateX(0);-webkit-transform:translateX(0);}
   #controls h2{font-size:14px;margin-bottom:16px;}
   .ctrl-section{margin-bottom:14px;}
   .ctrl-section > label{font-size:10px;margin-bottom:6px;}
@@ -1218,6 +1225,7 @@ function applyZoom(scale, tx, ty) {
 // Throttled wheel zoom
 let wheelRaf = null;
 document.addEventListener('wheel', (e) => {
+  if (e.target.closest('#controls') || e.target.closest('#info-panel')) return;
   e.preventDefault();
   if (currentFollowing) stopFollowing();
   if (wheelRaf) return;
@@ -1247,6 +1255,7 @@ document.addEventListener('touchstart', (e) => {
 
 document.addEventListener('touchmove', (e) => {
   if (e.touches.length === 2 && initialPinchDistance !== null) {
+    if (e.target.closest('#controls') || e.target.closest('#info-panel')) return;
     e.preventDefault();
     if (pinchRaf) return;
     pinchRaf = requestAnimationFrame(() => {
@@ -1534,6 +1543,13 @@ document.addEventListener('keydown', (e) => {
     closeInfo();
   }
 });
+
+// ============ SAFARI VIEWPORT HEIGHT FIX ============
+function setVH() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+}
+setVH();
+window.addEventListener('resize', setVH);
 </script>
 </body>
 </html>

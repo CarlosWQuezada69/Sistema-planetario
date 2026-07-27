@@ -1516,20 +1516,18 @@ els.solarSystem.addEventListener('click', (e) => {
 });
 
 // ============ ESCALADO RESPONSIVE ============
+const desktopRadii = {
+  mercury: 150, venus: 210, earth: 270, mars: 340,
+  jupiter: 430, saturn: 520, uranus: 600, neptune: 680
+};
 function applyResponsiveScale() {
   const isMobile = window.innerWidth <= 768;
   if (isMobile) {
-    // Mobile: sin escalado, órbitas más pequeñas, planetas/etiquetas a tamaño real
     els.systemContent.style.transform = 'none';
     const w = window.innerWidth;
-    // radio base para móvil, interpola según ancho
     const base = {
       mercury: 85, venus: 120, earth: 160, mars: 205,
       jupiter: 270, saturn: 340, uranus: 400, neptune: 460
-    };
-    const desktopRadii = {
-      mercury: 150, venus: 210, earth: 270, mars: 340,
-      jupiter: 430, saturn: 520, uranus: 600, neptune: 680
     };
     const t = Math.min(1, Math.max(0, (w - 320) / 350));
     Object.keys(base).forEach(key => {
@@ -1537,7 +1535,6 @@ function applyResponsiveScale() {
       const orbit = document.querySelector(`.orbit[data-planet="${key}"]`);
       if (orbit) orbit.style.setProperty('--radius', `${r}px`);
     });
-    // Asteroides entre Marte y Júpiter
     const astBase = [220, 230, 238, 245];
     const astDesktop = [370, 385, 395, 405];
     document.querySelectorAll('.orbit.asteroid-orbit').forEach((o, i) => {
@@ -1547,12 +1544,14 @@ function applyResponsiveScale() {
       }
     });
   } else {
-    // Desktop: escalado proporcional para que quepa todo
     const minDim = Math.min(window.innerWidth, window.innerHeight);
     let scale = minDim / 1450;
     scale = Math.max(0.25, Math.min(1, scale));
     els.systemContent.style.transform = `scale(${scale})`;
-    document.querySelectorAll('.orbit[data-planet]').forEach(o => o.style.removeProperty('--radius'));
+    Object.entries(desktopRadii).forEach(([key, r]) => {
+      const orbit = document.querySelector(`.orbit[data-planet="${key}"]`);
+      if (orbit) orbit.style.setProperty('--radius', `${r}px`);
+    });
   }
 }
 

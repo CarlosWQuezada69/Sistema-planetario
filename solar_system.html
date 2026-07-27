@@ -49,8 +49,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* ========== SOL 3D ========== */
 .sun{
-  position:absolute;width:100px;height:100px;border-radius:50%;z-index:10;
-  left:calc(50% - 50px);top:calc(50% - 50px);
+  position:absolute;width:120px;height:120px;border-radius:50%;z-index:10;
+  left:calc(50% - 60px);top:calc(50% - 60px);
   background:
     radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, transparent 25%),
     radial-gradient(circle at 40% 40%, #fff700 0%, #ffaa00 30%, #ff6600 60%, #cc3300 85%, #801a00 100%);
@@ -125,8 +125,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- MERCURIO --- */
 .mercury{
-  --size:10px;--glow:rgba(180,180,180,0.6);
-  width:10px;height:10px;
+  --size:13px;--glow:rgba(180,180,180,0.6);
+  width:13px;height:13px;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.35) 0%, transparent 40%),
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.5) 0%, transparent 55%),
@@ -139,8 +139,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- VENUS --- */
 .venus{
-  --size:16px;--glow:rgba(230,180,80,0.6);
-  width:16px;height:16px;
+  --size:20px;--glow:rgba(230,180,80,0.6);
+  width:20px;height:20px;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.3) 0%, transparent 35%),
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.45) 0%, transparent 50%),
@@ -153,8 +153,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- TIERRA --- */
 .earth{
-  --size:17px;--glow:rgba(30,144,255,0.6);
-  width:17px;height:17px;
+  --size:21px;--glow:rgba(30,144,255,0.6);
+  width:21px;height:21px;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.3) 0%, transparent 30%),
     radial-gradient(circle at 65% 20%, rgba(45,143,62,0.9) 0%, transparent 28%),
@@ -185,8 +185,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- MARTE --- */
 .mars{
-  --size:12px;--glow:rgba(200,80,50,0.6);
-  width:12px;height:12px;
+  --size:15px;--glow:rgba(200,80,50,0.6);
+  width:15px;height:15px;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.25) 0%, transparent 35%),
     radial-gradient(circle at 55% 15%, rgba(255,255,255,0.3) 0%, transparent 12%),
@@ -200,8 +200,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- JÚPITER --- */
 .jupiter{
-  --size:38px;--glow:rgba(218,165,32,0.6);
-  width:38px;height:38px;
+  --size:46px;--glow:rgba(218,165,32,0.6);
+  width:46px;height:46px;
   overflow:hidden;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 35%),
@@ -235,8 +235,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- SATURNO --- */
 .saturn{
-  --size:32px;--glow:rgba(245,222,179,0.5);
-  width:32px;height:32px;
+  --size:40px;--glow:rgba(245,222,179,0.5);
+  width:40px;height:40px;
   overflow:visible;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.25) 0%, transparent 35%),
@@ -271,8 +271,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- URANO --- */
 .uranus{
-  --size:24px;--glow:rgba(100,220,230,0.5);
-  width:24px;height:24px;
+  --size:30px;--glow:rgba(100,220,230,0.5);
+  width:30px;height:30px;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.3) 0%, transparent 35%),
     radial-gradient(circle at 75% 75%, rgba(0,0,0,0.35) 0%, transparent 45%),
@@ -292,8 +292,8 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 
 /* --- NEPTUNO --- */
 .neptune{
-  --size:23px;--glow:rgba(40,80,200,0.6);
-  width:23px;height:23px;
+  --size:28px;--glow:rgba(40,80,200,0.6);
+  width:28px;height:28px;
   background:
     radial-gradient(circle at 25% 25%, rgba(255,255,255,0.25) 0%, transparent 30%),
     radial-gradient(circle at 60% 55%, rgba(20,20,60,0.3) 0%, transparent 20%),
@@ -331,10 +331,10 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 .famous-asteroid:hover{box-shadow:0 0 12px 4px var(--glow);transform:translateX(-50%) scale(1.4);}
 .famous-asteroid.selected{box-shadow:0 0 16px 6px var(--glow);transform:translateX(-50%) scale(1.5);}
 
-.ceres{--size:7px;--glow:rgba(180,180,180,0.5);width:7px;height:7px;background:radial-gradient(circle at 35% 35%,#d0d0d0,#909090 50%,#505050);box-shadow:0 0 4px 1px rgba(180,180,180,0.2);}
-.vesta{--size:6px;--glow:rgba(200,180,140,0.5);width:6px;height:6px;background:radial-gradient(circle at 35% 35%,#e8dcc8,#b0a080 50%,#706040);box-shadow:0 0 4px 1px rgba(200,180,140,0.2);}
-.pallas{--size:5px;--glow:rgba(170,160,140,0.5);width:5px;height:5px;background:radial-gradient(circle at 35% 35%,#c8c0b0,#908878 50%,#585048);box-shadow:0 0 4px 1px rgba(170,160,140,0.2);}
-.eros{--size:4px;--glow:rgba(190,170,150,0.5);width:4px;height:4px;background:radial-gradient(circle at 35% 35%,#d8c8b0,#a09070 50%,#605038);box-shadow:0 0 3px 1px rgba(190,170,150,0.2);}
+.ceres{--size:9px;--glow:rgba(180,180,180,0.5);width:9px;height:9px;background:radial-gradient(circle at 35% 35%,#d0d0d0,#909090 50%,#505050);box-shadow:0 0 4px 1px rgba(180,180,180,0.2);}
+.vesta{--size:8px;--glow:rgba(200,180,140,0.5);width:8px;height:8px;background:radial-gradient(circle at 35% 35%,#e8dcc8,#b0a080 50%,#706040);box-shadow:0 0 4px 1px rgba(200,180,140,0.2);}
+.pallas{--size:7px;--glow:rgba(170,160,140,0.5);width:7px;height:7px;background:radial-gradient(circle at 35% 35%,#c8c0b0,#908878 50%,#585048);box-shadow:0 0 4px 1px rgba(170,160,140,0.2);}
+.eros{--size:6px;--glow:rgba(190,170,150,0.5);width:6px;height:6px;background:radial-gradient(circle at 35% 35%,#d8c8b0,#a09070 50%,#605038);box-shadow:0 0 3px 1px rgba(190,170,150,0.2);}
 
 /* ========== ESTRELLAS FAMOSAS ========== */
 .famous-star{
@@ -343,9 +343,9 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   transform:translate(-50%,-50%);
   transition:filter 0.3s;
 }
-.famous-star.selected .star-dot{width:12px;height:12px;box-shadow:0 0 16px 6px currentColor;animation:none;}
+.famous-star.selected .star-dot{width:15px;height:15px;box-shadow:0 0 16px 6px currentColor;animation:none;}
 .star-dot{
-  width:6px;height:6px;border-radius:50%;
+  width:8px;height:8px;border-radius:50%;
   animation:star-glow 3s ease-in-out infinite alternate;
 }
 .star-label{
@@ -357,16 +357,16 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 .famous-star:hover .star-label{color:rgba(255,255,255,0.8);}
 @keyframes star-glow{0%{box-shadow:0 0 4px 1px currentColor;}100%{box-shadow:0 0 10px 3px currentColor;}}
 
-.sirius{background:#e8f0ff;color:#e8f0ff;width:7px;height:7px;}
-.betelgeuse{background:#ff6030;color:#ff6030;width:9px;height:9px;}
-.polaris{background:#fff8e0;color:#fff8e0;width:5px;height:5px;}
-.vega{background:#d0e8ff;color:#d0e8ff;width:6px;height:6px;}
-.rigel{background:#c0d8ff;color:#c0d8ff;width:8px;height:8px;}
-.antares{background:#ff4020;color:#ff4020;width:7px;height:7px;}
-.aldebaran{background:#ff8040;color:#ff8040;width:7px;height:7px;}
-.proxima{background:#ff6040;color:#ff6040;width:4px;height:4px;}
-.canopus{background:#fff0d0;color:#fff0d0;width:6px;height:6px;}
-.arcturus{background:#ffa040;color:#ffa040;width:7px;height:7px;}
+.sirius{background:#e8f0ff;color:#e8f0ff;width:9px;height:9px;}
+.betelgeuse{background:#ff6030;color:#ff6030;width:12px;height:12px;}
+.polaris{background:#fff8e0;color:#fff8e0;width:7px;height:7px;}
+.vega{background:#d0e8ff;color:#d0e8ff;width:8px;height:8px;}
+.rigel{background:#c0d8ff;color:#c0d8ff;width:10px;height:10px;}
+.antares{background:#ff4020;color:#ff4020;width:9px;height:9px;}
+.aldebaran{background:#ff8040;color:#ff8040;width:9px;height:9px;}
+.proxima{background:#ff6040;color:#ff6040;width:6px;height:6px;}
+.canopus{background:#fff0d0;color:#fff0d0;width:8px;height:8px;}
+.arcturus{background:#ffa040;color:#ffa040;width:9px;height:9px;}
 
 /* ========== AGUJEROS NEGROS ========== */
 .blackhole-marker{
@@ -376,13 +376,13 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 }
 .blackhole-marker.selected .blackhole-dot{box-shadow:0 0 24px 8px rgba(255,120,0,0.6),0 0 50px 15px rgba(255,80,0,0.3);animation:none;}
 .blackhole-dot{
-  width:14px;height:14px;border-radius:50%;
+  width:17px;height:17px;border-radius:50%;
   background:radial-gradient(circle,#000 40%,rgba(255,120,0,0.6) 60%,rgba(255,60,0,0.2) 80%,transparent 100%);
   box-shadow:0 0 12px 3px rgba(255,100,0,0.3),0 0 30px 6px rgba(255,60,0,0.1);
   animation:accretion 4s linear infinite;
 }
-.blackhole-dot.sagittarius{width:18px;height:18px;}
-.blackhole-dot.m87{width:16px;height:16px;}
+.blackhole-dot.sagittarius{width:22px;height:22px;}
+.blackhole-dot.m87{width:20px;height:20px;}
 @keyframes accretion{
   0%{box-shadow:0 0 12px 3px rgba(255,100,0,0.3),0 0 30px 6px rgba(255,60,0,0.1);}
   50%{box-shadow:0 0 18px 5px rgba(255,120,0,0.5),0 0 40px 10px rgba(255,80,0,0.2);}

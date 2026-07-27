@@ -555,67 +555,45 @@ input[type=range]::-webkit-slider-thumb{
   padding:6px 12px;font-size:11px;color:rgba(255,255,255,0.5);
 }
 
-/* ========== HAMBURGUESA ========== */
-#menu-toggle{
-  display:none;position:fixed;top:16px;left:16px;z-index:110;
-  width:44px;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);
-  background:rgba(8,8,28,0.94);
-  cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.4);
-  transition:background 0.2s;
-}
-#menu-toggle:active{background:rgba(20,20,50,0.98);}
-#menu-toggle span{
-  display:block;width:20px;height:2px;background:#fff;border-radius:2px;
-  transition:transform 0.3s, opacity 0.3s;
-}
-#menu-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
-#menu-toggle.open span:nth-child(2){opacity:0;}
-#menu-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
-#menu-overlay{
-  display:none;position:fixed;inset:0;z-index:99;
-  background:rgba(0,0,0,0.5);
-}
-#menu-overlay.visible{display:block;}
+/* ========== HAMBURGUESA (oculta siempre) ========== */
+#menu-toggle{display:none!important;}
+#menu-overlay{display:none!important;}
 
 /* ========== RESPONSIVE ========== */
 @supports(height:100dvh){
   #solar-system{height:100dvh;}
 }
 @media(max-width:768px){
-  #menu-toggle{display:flex;}
   #controls{
-    position:fixed;top:0;left:0;
-    height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;
-    width:260px;border-radius:0 14px 14px 0;
-    padding:65px 14px 24px;
-    background:rgba(8,8,28,0.97);
-    border:1px solid rgba(255,255,255,0.1);
-    border-right:none;
-    z-index:105;
+    top:12px;left:10px;width:210px;
+    padding:12px 10px;
+    max-height:calc(100vh - 24px);
+    font-size:10px;
     overflow-y:auto;-webkit-overflow-scrolling:touch;
-    touch-action:pan-y;overscroll-behavior:contain;
-    transform:translateX(-110%);-webkit-transform:translateX(-110%);
-    transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);-webkit-transition:-webkit-transform 0.35s cubic-bezier(0.4,0,0.2,1);
-    display:block;visibility:visible;opacity:1;
-    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
+    touch-action:pan-y;
   }
-  #controls.open{transform:translateX(0);-webkit-transform:translateX(0);}
-  #controls h2{font-size:14px;margin-bottom:16px;}
-  .ctrl-section{margin-bottom:14px;}
-  .ctrl-section > label{font-size:10px;margin-bottom:6px;}
-  .toggle-row{padding:5px 0;}
-  .toggle-row span{font-size:12px;}
-  .toggle{width:38px;height:21px;}
-  .toggle::after{width:17px;height:17px;}
-  .toggle.on::after{transform:translateX(17px);}
-  .btn{padding:7px 12px;font-size:12px;}
-  .btn-play{width:40px;height:36px;font-size:17px;}
-  .cat-header{padding:8px 10px;}
-  .cat-name{font-size:12px;}
-  .cat-item{padding:7px 10px;font-size:12px;}
+  #controls h2{font-size:12px;margin-bottom:12px;}
+  #controls h2 span{font-size:14px;}
+  .ctrl-section{margin-bottom:10px;}
+  .ctrl-section > label{font-size:9px;margin-bottom:4px;}
+  .toggle-row{padding:3px 0;}
+  .toggle-row span{font-size:10px;}
+  .toggle{width:32px;height:18px;}
+  .toggle::after{width:14px;height:14px;}
+  .toggle.on::after{transform:translateX(14px);}
+  .btn{padding:5px 8px;font-size:10px;}
+  .btn-play{width:34px;height:30px;font-size:14px;}
+  input[type=range]{height:3px;margin:4px 0;}
+  input[type=range]::-webkit-slider-thumb{width:12px;height:12px;}
+  .speed-val{font-size:9px;}
+  .cat-header{padding:6px 8px;}
+  .cat-icon{font-size:11px;}
+  .cat-name{font-size:10px;}
+  .cat-count{font-size:8px;padding:1px 5px;}
+  .cat-item{padding:5px 6px;font-size:10px;}
+  .cat-item-dot{width:6px;height:6px;}
 
-  /* Panel info optimizado móvil */
+  /* Panel info móvil (se mantiene) */
   #info-panel{
     bottom:0;right:0;left:0;
     width:100%;border-radius:16px 16px 0 0;
@@ -636,13 +614,15 @@ input[type=range]::-webkit-slider-thumb{
   #info-panel .fun-fact{font-size:11px;margin-top:8px;padding:8px;}
 
   #zoom-indicator{
-    bottom:calc(8px + env(safe-area-inset-bottom));left:8px;
-    font-size:10px;padding:4px 8px;
+    bottom:8px;left:8px;
+    font-size:9px;padding:4px 7px;
   }
 }
-@media(max-width:480px){
-  #controls{width:240px;padding:60px 12px 20px;}
-  #info-panel .data-grid{grid-template-columns:1fr 1fr;gap:5px 6px;}
+@media(max-width:380px){
+  #controls{width:180px;left:8px;top:8px;padding:10px 8px;}
+  #controls h2{font-size:11px;}
+  .cat-name{font-size:9px;}
+  .cat-item{font-size:9px;padding:4px 5px;}
 }
 @supports(padding:env(safe-area-inset-bottom)){
   #info-panel{padding-bottom:calc(12px + env(safe-area-inset-bottom));}
@@ -763,10 +743,10 @@ input[type=range]::-webkit-slider-thumb{
 </div>
 </div>
 
-<button id="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menú">
+<button id="menu-toggle" aria-label="Abrir menú" style="display:none!important">
   <span></span><span></span><span></span>
 </button>
-<div id="menu-overlay" onclick="toggleMenu()"></div>
+<div id="menu-overlay" style="display:none!important"></div>
 
 <div id="controls">
   <h2><span>☀</span> Sistema Solar</h2>
@@ -853,8 +833,6 @@ const els = {
   infoData: $('info-data'),
   infoFact: $('info-fact'),
   controls: $('controls'),
-  menuToggle: $('menu-toggle'),
-  menuOverlay: $('menu-overlay'),
   planetButtons: $('planet-buttons')
 };
 const allOrbits = document.querySelectorAll('.orbit');
@@ -1368,18 +1346,6 @@ function closeInfo() {
   document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
 }
 
-function closeMobileMenu() {
-  els.controls.classList.remove('open');
-  els.menuToggle.classList.remove('open');
-  els.menuOverlay.classList.remove('visible');
-}
-
-function toggleMenu() {
-  const isOpen = els.controls.classList.toggle('open');
-  els.menuToggle.classList.toggle('open', isOpen);
-  els.menuOverlay.classList.toggle('visible', isOpen);
-}
-
 // ============ CLICK FUERA ============
 els.solarSystem.addEventListener('click', (e) => {
   if (e.target.id === 'solar-system' || e.target.classList.contains('star')) {
@@ -1547,7 +1513,6 @@ window.addEventListener('resize', () => {
 // ============ TECLADO ============
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (els.controls.classList.contains('open')) toggleMenu();
     if (currentFollowing) stopFollowing();
     closeInfo();
   }

@@ -25,13 +25,11 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     #05050f;
   overflow:hidden;
   transform-origin:center center;-webkit-transform-origin:center center;
-  will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+  will-change:transform;
   touch-action:none;
 }
 #solar-system .system-content{
   position:absolute;inset:0;
-  transform-origin:center center;-webkit-transform-origin:center center;
-  will-change:transform;
 }
 
 /* ========== ESTRELLAS ========== */
@@ -101,7 +99,6 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   position:absolute;border-radius:50%;z-index:5;cursor:pointer;
   left:50%;top:calc(-1 * var(--size)/2);
   transform:translateX(-50%);
-  will-change:transform;
 }
 .planet:hover{box-shadow:0 0 26px 11px var(--glow);transform:translateX(-50%) scale(1.25);}
 .planet.selected{box-shadow:0 0 34px 15px var(--glow);transform:translateX(-50%) scale(1.35);}
@@ -110,12 +107,13 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
 .planet-label{
   position:absolute;z-index:6;pointer-events:none;
   left:50%;transform:translateX(-50%);
-  top:calc(var(--size)/2 + 10px);
-  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
-  color:rgba(255,255,255,0.75);text-shadow:0 0 6px rgba(0,0,0,0.9);
+  top:calc(var(--size)/2 + 8px);
+  font-size:10px;letter-spacing:1.2px;text-transform:uppercase;
+  color:#fff;text-shadow:0 0 8px rgba(0,0,0,0.95),0 0 4px rgba(0,0,0,0.8);
   white-space:nowrap;
-  padding:2px 6px;border-radius:4px;
-  background:rgba(0,0,0,0.35);
+  padding:3px 8px;border-radius:4px;
+  background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
 }
 .planet-label.hidden{display:none;}
 
@@ -323,7 +321,6 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   position:absolute;border-radius:40% 60% 50% 50%;z-index:5;cursor:pointer;
   left:50%;top:calc(-1 * var(--size)/2);
   transform:translateX(-50%);
-  will-change:transform;
 }
 .famous-asteroid:hover{box-shadow:0 0 20px 8px var(--glow);transform:translateX(-50%) scale(1.4);}
 .famous-asteroid.selected{box-shadow:0 0 28px 12px var(--glow);transform:translateX(-50%) scale(1.5);}
@@ -492,6 +489,14 @@ input[type=range]::-webkit-slider-thumb{
   width:8px;height:8px;border-radius:50%;flex-shrink:0;
 }
 .cat-item-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#search-input{
+  width:100%;padding:8px 12px;margin-bottom:8px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;color:#fff;font-size:12px;font-family:inherit;
+  outline:none;transition:border-color 0.2s;
+}
+#search-input:focus{border-color:rgba(100,180,255,0.4);}
+#search-input::placeholder{color:rgba(255,255,255,0.3);}
 
 /* ========== PANEL DE INFO ========== */
 #info-panel{
@@ -552,78 +557,105 @@ input[type=range]::-webkit-slider-thumb{
   padding:6px 12px;font-size:11px;color:rgba(255,255,255,0.5);
 }
 
-/* ========== HAMBURGUESA (oculta siempre en móvil) ========== */
-#menu-toggle,#menu-overlay{display:none!important;}
+/* ========== BOTÓN FLOTANTE Y OVERLAY MÓVIL ========== */
+#controls-toggle,#controls-overlay{display:none;}
 
-/* ========== RESPONSIVE: VISTA ESCRITORIO FORZADA ========== */
-@supports(height:100dvh){
-  #solar-system{height:100dvh;}
-}
 @media(max-width:768px){
+  #controls-overlay{
+    display:block;position:fixed;inset:0;z-index:98;
+    background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;
+    transition:opacity 0.3s ease;
+  }
+  #controls-overlay.open{opacity:1;pointer-events:auto;}
+
+  #controls-toggle{
+    display:flex;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99;
+    width:52px;height:52px;border-radius:50%;
+    background:rgba(8,8,28,0.95);border:1px solid rgba(255,255,255,0.15);
+    align-items:center;justify-content:center;
+    font-size:22px;cursor:pointer;box-shadow:0 4px 24px rgba(0,0,0,0.6);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    transition:transform 0.2s, box-shadow 0.2s;
+  }
+  #controls-toggle:active{transform:translateX(-50%) scale(0.92);}
+  #controls-toggle.hidden{display:none;}
+
   #controls{
-    top:4px;left:4px;width:80px;padding:3px 3px;
-    max-height:calc(100vh - 8px);border-radius:5px;
-    overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    position:fixed;bottom:0;left:0;right:0;top:auto;z-index:99;
+    width:100%;border-radius:18px 18px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));
+    max-height:65vh;overflow-y:auto;
+    background:rgba(10,10,35,0.97);
+    border:1px solid rgba(255,255,255,0.06);
+    border-bottom:none;
+    box-shadow:0 -8px 40px rgba(0,0,0,0.5);
+    transform:translateY(100%);
+    transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);
+    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
+    -webkit-overflow-scrolling:touch;
     touch-action:pan-y;
   }
-  #controls h2{font-size:6px;margin-bottom:3px;gap:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  #controls h2 span{font-size:7px;}
-  .ctrl-section{margin-bottom:2px;}
-  .ctrl-section > label{font-size:5px;margin-bottom:1px;padding-bottom:1px;}
-  .btn-group{gap:2px;}
-  .btn{padding:1px 2px;font-size:6px;border-radius:2px;}
-  .btn-play{width:16px;height:12px;font-size:7px;}
-  .toggle-row{padding:1px 0;gap:2px;}
-  .toggle-row span{font-size:5px;}
-  .toggle{width:16px;height:9px;border-radius:4px;border-width:1px;}
-  .toggle::after{width:6px;height:6px;top:1px;left:1px;}
-  .toggle.on::after{transform:translateX(6px);}
-  input[type=range]{height:1px;margin:1px 0;}
-  input[type=range]::-webkit-slider-thumb{width:5px;height:5px;}
-  .speed-val{font-size:5px;margin-top:0;}
-  .cat-header{padding:2px 2px;margin:0;border-radius:2px;}
-  .cat-header-left{gap:2px;}
-  .cat-icon{font-size:6px;width:8px;}
-  .cat-name{font-size:5px;}
-  .cat-count{font-size:5px;padding:0 1px;border-radius:3px;}
-  .cat-arrow{font-size:5px;}
-  .cat-list.open{max-height:200px;}
-  .cat-list-inner{padding:1px 0;}
-  .cat-item{padding:1px 2px;border-radius:2px;font-size:5px;gap:1px;}
-  .cat-item-dot{width:2px;height:2px;}
-  #zoom-indicator{bottom:2px;left:2px;font-size:5px;padding:1px 2px;border-radius:2px;}
+  #controls::before{
+    content:'';position:sticky;top:0;display:block;
+    width:40px;height:4px;border-radius:2px;
+    background:rgba(255,255,255,0.15);margin:0 auto 16px;
+  }
+  #controls.open{transform:translateY(0);}
+
+  #controls h2{font-size:15px;margin-bottom:14px;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #controls h2 span{font-size:18px;}
+  .ctrl-section{margin-bottom:14px;}
+  .ctrl-section > label{font-size:10px;margin-bottom:6px;padding-bottom:4px;}
+
+  .btn-group{gap:6px;}
+  .btn{padding:8px 14px;font-size:12px;border-radius:8px;min-height:38px;}
+  .btn-play{width:44px;height:38px;font-size:18px;}
+
+  .toggle-row{padding:6px 0;gap:8px;}
+  .toggle-row span{font-size:13px;}
+  .toggle{width:42px;height:24px;border-radius:12px;flex-shrink:0;}
+  .toggle::after{width:18px;height:18px;top:2px;left:3px;}
+  .toggle.on::after{transform:translateX(18px);}
+
+  input[type=range]{height:6px;margin:8px 0;}
+  input[type=range]::-webkit-slider-thumb{width:18px;height:18px;}
+  .speed-val{font-size:11px;margin-top:2px;}
+
+  .cat-header{padding:10px 12px;margin:2px 0;border-radius:10px;}
+  .cat-header-left{gap:10px;}
+  .cat-icon{font-size:16px;width:24px;}
+  .cat-name{font-size:13px;}
+  .cat-count{font-size:10px;padding:2px 8px;}
+  .cat-arrow{font-size:12px;}
+  .cat-list.open{max-height:50vh;}
+  .cat-list-inner{padding:8px 0 6px 4px;}
+  .cat-item{padding:10px 12px;border-radius:8px;font-size:13px;gap:10px;min-height:40px;}
+
+  #zoom-indicator{bottom:80px;left:50%;transform:translateX(-50%);font-size:10px;padding:4px 10px;border-radius:16px;white-space:nowrap;}
   .star-container{pointer-events:none;}
 
-  /* Panel info móvil (adaptado) */
-  #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:10px 10px 0 0;max-height:35vh;padding:6px 8px calc(6px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;touch-action:pan-y;}
+  #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:16px 16px 0 0;max-height:50vh;padding:14px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;touch-action:pan-y;}
   #info-panel.visible{transform:translateY(0);}
-  .info-handle{display:block;height:2px;width:22px;margin-bottom:4px;border-radius:2px;}
-  #info-panel h3{font-size:11px;margin-bottom:1px;}
-  #info-panel .subtitle{font-size:9px;margin-bottom:4px;}
-  #info-panel .data-grid{grid-template-columns:1fr 1fr;gap:2px;}
-  #info-panel .data-item{padding:3px;}
-  #info-panel .data-item .data-label{font-size:6px;}
-  #info-panel .data-item .data-value{font-size:9px;}
-  #info-panel .fun-fact{font-size:8px;margin-top:3px;padding:4px;}
+  .info-handle{display:block;height:3px;width:32px;margin-bottom:8px;border-radius:2px;}
+  #info-panel h3{font-size:15px;margin-bottom:2px;}
+  #info-panel .subtitle{font-size:12px;margin-bottom:8px;}
+  #info-panel .data-grid{grid-template-columns:1fr 1fr;gap:6px;}
+  #info-panel .data-item{padding:6px;}
+  #info-panel .data-item .data-label{font-size:8px;}
+  #info-panel .data-item .data-value{font-size:12px;}
+  #info-panel .fun-fact{font-size:10px;margin-top:6px;padding:8px;}
 }
 @media(max-width:380px){
-  #controls{width:65px;padding:2px 2px;left:2px;top:2px;border-radius:4px;}
-  #controls h2{font-size:5px;margin-bottom:2px;}
-  .ctrl-section{margin-bottom:1px;}
-  .ctrl-section > label{font-size:5px;}
-  .btn{padding:1px 1px;font-size:5px;}
-  .btn-play{width:13px;height:10px;font-size:6px;}
-  .cat-name,.cat-item{font-size:5px;}
-  .toggle-row span{font-size:5px;}
-  .toggle{width:14px;height:7px;}
-  .toggle::after{width:5px;height:5px;}
-  .toggle.on::after{transform:translateX(5px);}
-  .cat-icon{font-size:5px;width:6px;}
-  .cat-item-dot{width:2px;height:2px;}
-  .cat-count{font-size:4px;}
-  input[type=range]{margin:0;}
-  input[type=range]::-webkit-slider-thumb{width:4px;height:4px;}
-  #zoom-indicator{font-size:5px;}
+  #controls{padding:16px 12px calc(16px + env(safe-area-inset-bottom));}
+  #controls h2{font-size:13px;}
+  .btn{padding:6px 10px;font-size:11px;min-height:34px;}
+  .btn-play{width:38px;height:34px;font-size:16px;}
+  .toggle{width:36px;height:20px;}
+  .toggle::after{width:14px;height:14px;}
+  .toggle.on::after{transform:translateX(14px);}
+  .cat-header{padding:8px 10px;}
+  .cat-name{font-size:12px;}
+  .cat-item{padding:8px 10px;font-size:12px;min-height:36px;}
+  #zoom-indicator{bottom:76px;font-size:9px;}
 }
 @supports(padding:env(safe-area-inset-bottom)){
   #info-panel{padding-bottom:calc(12px + env(safe-area-inset-bottom));}
@@ -747,7 +779,8 @@ input[type=range]::-webkit-slider-thumb{
 <button id="menu-toggle" aria-label="Abrir menú" style="display:none!important">
   <span></span><span></span><span></span>
 </button>
-<div id="menu-overlay" style="display:none!important"></div>
+<div id="controls-overlay" onclick="toggleMobileControls()"></div>
+<button id="controls-toggle" onclick="toggleMobileControls()">☀</button>
 
 <div id="controls">
   <h2><span>☀</span> Sistema Solar</h2>
@@ -772,6 +805,7 @@ input[type=range]::-webkit-slider-thumb{
   </div>
   <div class="ctrl-section">
     <label>Catálogo</label>
+    <input type="text" id="search-input" placeholder="Buscar planeta, estrella..." oninput="filterCatalog(this.value)" autocomplete="off">
     <div class="cat-header open" onclick="toggleCat(this,'planets')">
       <div class="cat-header-left"><span class="cat-icon">🪐</span><span class="cat-name">Planetas</span><span class="cat-count">8</span></div>
       <span class="cat-arrow">▸</span>
@@ -909,7 +943,7 @@ const constellationInfo = {
 
 // ============ GENERAR ESTRELLAS (reducido en móvil) ============
 const isMobile = window.innerWidth <= 768;
-const starCount = isMobile ? 150 : 350;
+const starCount = isMobile ? 80 : 200;
 const starFrag = document.createDocumentFragment();
 for (let i = 0; i < starCount; i++) {
   const s = document.createElement('span');
@@ -927,7 +961,7 @@ for (let i = 0; i < starCount; i++) {
 els.starContainer.appendChild(starFrag);
 
 // ============ GENERAR ASTEROIDES (reducido en móvil) ============
-const asteroidCount = isMobile ? 25 : 50;
+const asteroidCount = isMobile ? 15 : 30;
 const astFrag = document.createDocumentFragment();
 for (let i = 0; i < asteroidCount; i++) {
   const a = document.createElement('div');
@@ -988,7 +1022,41 @@ let currentSpeed = 1;
 let currentZoom = 1;
 let currentFollowing = null;
 let followRaf = null;
+let trackSkip = false;
 const options = { orbits: true, labels: true, asteroids: true, constellations: true };
+
+// ============ MÓVIL: BOTTOM SHEET ============
+function toggleMobileControls() {
+  const c = $('controls');
+  const o = $('controls-overlay');
+  const t = $('controls-toggle');
+  const isOpen = c.classList.toggle('open');
+  o.classList.toggle('open', isOpen);
+  t.classList.toggle('hidden', isOpen);
+  if (!isOpen) closeInfo();
+}
+
+// Close mobile controls on Escape
+function closeMobileControls() {
+  const c = $('controls');
+  if (c.classList.contains('open')) {
+    c.classList.remove('open');
+    $('controls-overlay').classList.remove('open');
+    $('controls-toggle').classList.remove('hidden');
+  }
+}
+
+// ============ BÚSQUEDA EN CATÁLOGO ============
+function filterCatalog(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('.cat-item').forEach(item => {
+    const name = item.querySelector('.cat-item-name').textContent.toLowerCase();
+    item.style.display = !q || name.includes(q) ? '' : 'none';
+  });
+  const hasResults = [...document.querySelectorAll('.cat-item')].some(i => i.style.display !== 'none');
+  document.querySelectorAll('.cat-list').forEach(l => l.classList.toggle('open', !!q));
+  document.querySelectorAll('.cat-header').forEach(h => h.classList.toggle('open', !!q));
+}
 
 // ============ CATEGORÍAS COLAPSABLES ============
 function toggleCat(header, catId) {
@@ -1033,37 +1101,56 @@ function toggleOption(opt) {
 // ============ SEGUIMIENTO ============
 const ZOOM_FOLLOW = isMobile ? 1.8 : 2.2;
 let currentCategory = null;
+let panX = 0, panY = 0;
+
+function setTransform(zoom, tx, ty) {
+  panX = tx; panY = ty;
+  els.solarSystem.style.transform = `scale(${zoom}) translate(${tx}px, ${ty}px)`;
+}
 
 function onPlanetClick(key) {
   if (currentFollowing === key) { stopFollowing(); return; }
-  startFollowing(key, 'planet');
-  // Zoom inicial inmediato
+  currentFollowing = key;
+  currentCategory = 'planet';
+  showInfo(key, 'planet');
+  highlightBtn(key);
   const orbit = document.querySelector(`[data-planet="${key}"]`);
   if (orbit) {
     const rect = orbit.getBoundingClientRect();
     const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
     const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
     els.solarSystem.style.transition = 'transform 0.4s ease';
-    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${-offsetX / ZOOM_FOLLOW}px, ${-offsetY / ZOOM_FOLLOW}px)`;
+    setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
-    setTimeout(() => { els.solarSystem.style.transition = ''; }, 450);
+    if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
+    setTimeout(() => {
+      els.solarSystem.style.transition = '';
+      trackPlanetLoop();
+    }, 420);
   }
 }
 
 function onAsteroidClick(key) {
   if (currentFollowing === key) { stopFollowing(); return; }
-  startFollowing(key, 'asteroid');
+  currentFollowing = key;
+  currentCategory = 'asteroid';
+  showInfo(key, 'asteroid');
+  highlightBtn(key);
   const orbit = document.querySelector(`[data-planet="${key}"]`);
   if (orbit) {
     const rect = orbit.getBoundingClientRect();
     const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
     const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
     els.solarSystem.style.transition = 'transform 0.4s ease';
-    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${-offsetX / ZOOM_FOLLOW}px, ${-offsetY / ZOOM_FOLLOW}px)`;
+    setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
-    setTimeout(() => { els.solarSystem.style.transition = ''; }, 450);
+    if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
+    setTimeout(() => {
+      els.solarSystem.style.transition = '';
+      trackPlanetLoop();
+    }, 420);
   }
 }
 
@@ -1075,14 +1162,10 @@ function onStarClick(key) {
   highlightBtn(key);
   const starEl = document.querySelector(`.famous-star[onclick*="${key}"]`);
   if (starEl) {
-    const prevTransform = els.solarSystem.style.transform;
-    els.solarSystem.style.transform = 'none';
-    const rect = starEl.getBoundingClientRect();
-    els.solarSystem.style.transform = prevTransform;
-    const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
-    const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
+    const tx = window.innerWidth / 2 - starEl.offsetLeft;
+    const ty = window.innerHeight / 2 - starEl.offsetTop;
     els.solarSystem.style.transition = 'transform 0.5s ease';
-    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${-offsetX / ZOOM_FOLLOW}px, ${-offsetY / ZOOM_FOLLOW}px)`;
+    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${tx / ZOOM_FOLLOW}px, ${ty / ZOOM_FOLLOW}px)`;
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
     setTimeout(() => { els.solarSystem.style.transition = ''; }, 550);
@@ -1097,14 +1180,10 @@ function onBlackholeClick(key) {
   highlightBtn(key);
   const bhEl = document.querySelector(`.blackhole-marker[onclick*="${key}"]`);
   if (bhEl) {
-    const prevTransform = els.solarSystem.style.transform;
-    els.solarSystem.style.transform = 'none';
-    const rect = bhEl.getBoundingClientRect();
-    els.solarSystem.style.transform = prevTransform;
-    const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
-    const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
+    const tx = window.innerWidth / 2 - bhEl.offsetLeft;
+    const ty = window.innerHeight / 2 - bhEl.offsetTop;
     els.solarSystem.style.transition = 'transform 0.5s ease';
-    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${-offsetX / ZOOM_FOLLOW}px, ${-offsetY / ZOOM_FOLLOW}px)`;
+    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${tx / ZOOM_FOLLOW}px, ${ty / ZOOM_FOLLOW}px)`;
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
     setTimeout(() => { els.solarSystem.style.transition = ''; }, 550);
@@ -1129,7 +1208,7 @@ function onConstellationClick(name) {
     const offsetX = screenX - w / 2;
     const offsetY = screenY - h / 2;
     els.solarSystem.style.transition = 'transform 0.5s ease';
-    els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${-offsetX / ZOOM_FOLLOW}px, ${-offsetY / ZOOM_FOLLOW}px)`;
+    setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
     setTimeout(() => { els.solarSystem.style.transition = ''; }, 550);
@@ -1141,8 +1220,8 @@ function startFollowing(key, category) {
   currentCategory = category || (planetKeys.includes(key) ? 'planet' : (asteroidKeys.includes(key) ? 'asteroid' : null));
   showInfo(key, currentCategory);
   highlightBtn(key);
-  if (currentCategory === 'planet' || currentCategory === 'asteroid') {
-    if (!followRaf) trackPlanetLoop();
+  if ((currentCategory === 'planet' || currentCategory === 'asteroid') && !followRaf) {
+    trackPlanetLoop();
   }
 }
 
@@ -1167,6 +1246,7 @@ function stopFollowing() {
   document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('focused'));
   document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
   els.solarSystem.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+  panX = 0; panY = 0;
   els.solarSystem.style.transform = 'scale(1) translate(0px, 0px)';
   currentZoom = 1;
   els.zoomIndicator.textContent = 'Zoom: 100%';
@@ -1175,9 +1255,13 @@ function stopFollowing() {
 }
 
 function trackPlanetLoop() {
-  if (!currentFollowing) return;
+  if (!currentFollowing) { followRaf = null; return; }
   const orbit = document.querySelector(`[data-planet="${currentFollowing}"]`);
   if (!orbit) { followRaf = null; return; }
+
+  // Skip every other frame to reduce layout thrashing from getBoundingClientRect
+  if (trackSkip) { trackSkip = false; followRaf = requestAnimationFrame(trackPlanetLoop); return; }
+  trackSkip = true;
 
   const rect = orbit.getBoundingClientRect();
   const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
@@ -1185,44 +1269,56 @@ function trackPlanetLoop() {
   const tx = -offsetX / ZOOM_FOLLOW;
   const ty = -offsetY / ZOOM_FOLLOW;
 
-  els.solarSystem.style.transition = '';
-  els.solarSystem.style.transform = `scale(${ZOOM_FOLLOW}) translate(${tx}px, ${ty}px)`;
+  setTransform(ZOOM_FOLLOW, tx, ty);
   currentZoom = ZOOM_FOLLOW;
   els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
   followRaf = requestAnimationFrame(trackPlanetLoop);
 }
 
 function resetView() {
-  stopFollowing();
+  if (currentFollowing) { cancelAnimationFrame(followRaf); followRaf = null; }
+  currentFollowing = null;
+  currentCategory = null;
+  document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('focused'));
+  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
+  els.solarSystem.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+  panX = 0; panY = 0;
+  els.solarSystem.style.transform = 'scale(1) translate(0px, 0px)';
+  currentZoom = 1;
+  els.zoomIndicator.textContent = 'Zoom: 100%';
+  closeInfo();
+  setTimeout(() => { els.solarSystem.style.transition = ''; }, 650);
   els.speedSlider.value = 1;
   changeSpeed(1);
   if (!isPlaying) togglePlay();
 }
 
-// ============ ZOOM OPTIMIZADO CON RAF ============
-let zoomRaf = null;
+// ============ ZOOM ============
 function applyZoom(scale, tx, ty) {
   currentZoom = scale;
-  if (zoomRaf) cancelAnimationFrame(zoomRaf);
-  zoomRaf = requestAnimationFrame(() => {
-    els.solarSystem.style.transform = `scale(${scale}) translate(${tx || 0}px, ${ty || 0}px)`;
-    els.zoomIndicator.textContent = `Zoom: ${Math.round(scale*100)}%`;
-  });
+  if (tx !== undefined && ty !== undefined) { panX = tx; panY = ty; }
+  setTransform(scale, panX, panY);
+  els.zoomIndicator.textContent = `Zoom: ${Math.round(scale*100)}%`;
 }
 
-// Throttled wheel zoom
-let wheelRaf = null;
+// Smooth wheel zoom (accumulates deltas per frame)
+let wheelAcc = 0;
+let wheelPending = false;
 document.addEventListener('wheel', (e) => {
   if (e.target.closest('#controls') || e.target.closest('#info-panel')) return;
   e.preventDefault();
   if (currentFollowing) stopFollowing();
-  if (wheelRaf) return;
-  wheelRaf = requestAnimationFrame(() => {
-    const delta = e.deltaY > 0 ? -0.1 : 0.1;
-    currentZoom = Math.max(0.3, Math.min(3, currentZoom + delta));
-    applyZoom(currentZoom);
-    wheelRaf = null;
-  });
+  wheelAcc += e.deltaY > 0 ? -0.08 : 0.08;
+  if (!wheelPending) {
+    wheelPending = true;
+    requestAnimationFrame(() => {
+      currentZoom = Math.max(0.3, Math.min(3, currentZoom + wheelAcc));
+      currentZoom = Math.round(currentZoom * 10) / 10;
+      applyZoom(currentZoom);
+      wheelAcc = 0;
+      wheelPending = false;
+    });
+  }
 }, { passive: false });
 
 // Throttled pinch-to-zoom
@@ -1262,6 +1358,61 @@ document.addEventListener('touchend', () => {
   initialPinchDistance = null;
   pinchRaf = null;
 }, { passive: true });
+
+// ============ DRAG TO PAN ============
+let isDragging = false;
+let dragStartX = 0, dragStartY = 0;
+let dragPanStartX = 0, dragPanStartY = 0;
+let dragMoved = false;
+
+els.solarSystem.addEventListener('mousedown', (e) => {
+  if (currentFollowing || e.button !== 0) return;
+  if (e.target.closest('.planet') || e.target.closest('.famous-asteroid') ||
+      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker')) return;
+  isDragging = true; dragMoved = false;
+  dragStartX = e.clientX; dragStartY = e.clientY;
+  dragPanStartX = panX; dragPanStartY = panY;
+  els.solarSystem.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  const dx = e.clientX - dragStartX;
+  const dy = e.clientY - dragStartY;
+  if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true;
+  setTransform(currentZoom, dragPanStartX + dx / currentZoom, dragPanStartY + dy / currentZoom);
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+  els.solarSystem.style.cursor = '';
+});
+
+// Touch drag
+let touchId = null;
+els.solarSystem.addEventListener('touchstart', (e) => {
+  if (currentFollowing || e.touches.length !== 1) return;
+  if (e.target.closest('.planet') || e.target.closest('.famous-asteroid') ||
+      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker')) return;
+  touchId = e.touches[0].identifier;
+  isDragging = true; dragMoved = false;
+  dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
+  dragPanStartX = panX; dragPanStartY = panY;
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+  const t = [...e.touches].find(t => t.identifier === touchId);
+  if (!t) return;
+  const dx = t.clientX - dragStartX;
+  const dy = t.clientY - dragStartY;
+  if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true;
+  setTransform(currentZoom, dragPanStartX + dx / currentZoom, dragPanStartY + dy / currentZoom);
+}, { passive: true });
+
+document.addEventListener('touchend', () => {
+  isDragging = false; touchId = null;
+});
 
 // ============ SWIPE-TO-CLOSE INFO PANEL (móvil) ============
 let infoTouchStartY = 0;
@@ -1516,7 +1667,22 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if (currentFollowing) stopFollowing();
     closeInfo();
+    closeMobileControls();
   }
+  if (e.key === 'r' || e.key === 'R') { resetView(); closeMobileControls(); }
+  if (e.key === '+' || e.key === '=') {
+    currentZoom = Math.min(3, currentZoom + 0.2);
+    applyZoom(currentZoom);
+  }
+  if (e.key === '-') {
+    currentZoom = Math.max(0.3, currentZoom - 0.2);
+    applyZoom(currentZoom);
+  }
+  const panStep = 20 / currentZoom;
+  if (e.key === 'ArrowLeft') { setTransform(currentZoom, panX - panStep, panY); e.preventDefault(); }
+  if (e.key === 'ArrowRight') { setTransform(currentZoom, panX + panStep, panY); e.preventDefault(); }
+  if (e.key === 'ArrowUp') { setTransform(currentZoom, panX, panY - panStep); e.preventDefault(); }
+  if (e.key === 'ArrowDown') { setTransform(currentZoom, panX, panY + panStep); e.preventDefault(); }
 });
 
 // ============ SAFARI VIEWPORT HEIGHT FIX ============

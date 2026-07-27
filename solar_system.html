@@ -1372,6 +1372,7 @@ function toggleMenu() {
 
 // ============ CLICK FUERA ============
 els.solarSystem.addEventListener('click', (e) => {
+  if (window.innerWidth <= 768 && els.controls.classList.contains('open')) toggleMenu();
   if (e.target.id === 'solar-system' || e.target.classList.contains('star')) {
     if (currentFollowing) stopFollowing();
     else closeInfo();

@@ -403,6 +403,7 @@ html,body{width:100%;height:100%;height:calc(var(--vh,1vh)*100);background:#000;
   overflow-y:auto;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
   -webkit-overflow-scrolling:touch;
+  will-change:transform;
 }
 #controls h2{
   font-size:13px;font-weight:600;
@@ -508,7 +509,8 @@ input[type=range]::-webkit-slider-thumb{
   width:280px;
   box-shadow:0 8px 32px rgba(0,0,0,0.5);
   transform:translateY(120%);opacity:0;
-  transition:transform 0.4s ease, opacity 0.4s ease;
+  transition:transform 0.35s ease, opacity 0.3s ease;
+  will-change:transform;
 }
 #info-panel.visible{transform:translateY(0);opacity:1;}
 /* Drag handle para móvil */
@@ -982,7 +984,7 @@ function createItem(container, name, key, clickFn, color) {
   const item = document.createElement('div');
   item.className = 'cat-item';
   item.dataset.key = key;
-  item.onclick = (e) => { e.stopPropagation(); clickFn(key); };
+  item.onclick = (e) => { e.stopPropagation(); clickFn(key); if (window.innerWidth <= 768) closeMobileControls(); };
   item.innerHTML = `<span class="cat-item-dot" style="background:${color || '#fff'}"></span><span class="cat-item-name">${name}</span>`;
   container.appendChild(item);
 }
@@ -1129,7 +1131,7 @@ function onPlanetClick(key) {
     const rect = orbit.getBoundingClientRect();
     const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
     const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
-    els.solarSystem.style.transition = 'transform 0.4s ease';
+    els.solarSystem.style.transition = 'transform 0.3s ease';
     setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
@@ -1137,7 +1139,7 @@ function onPlanetClick(key) {
     setTimeout(() => {
       els.solarSystem.style.transition = '';
       trackPlanetLoop();
-    }, 420);
+    }, 320);
   }
 }
 
@@ -1152,7 +1154,7 @@ function onAsteroidClick(key) {
     const rect = orbit.getBoundingClientRect();
     const offsetX = (rect.left + rect.width / 2) - window.innerWidth / 2;
     const offsetY = (rect.top + rect.height / 2) - window.innerHeight / 2;
-    els.solarSystem.style.transition = 'transform 0.4s ease';
+    els.solarSystem.style.transition = 'transform 0.3s ease';
     setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
@@ -1160,7 +1162,7 @@ function onAsteroidClick(key) {
     setTimeout(() => {
       els.solarSystem.style.transition = '';
       trackPlanetLoop();
-    }, 420);
+    }, 320);
   }
 }
 

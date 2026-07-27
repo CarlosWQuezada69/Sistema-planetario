@@ -564,37 +564,37 @@ input[type=range]::-webkit-slider-thumb{
 }
 @media(max-width:768px){
   #controls{
-    top:6px;left:6px;width:120px;padding:6px 5px;
-    max-height:calc(100vh - 12px);border-radius:8px;
+    top:4px;left:4px;width:100px;padding:4px 3px;
+    max-height:calc(100vh - 8px);border-radius:6px;
     overflow-y:auto;-webkit-overflow-scrolling:touch;
     touch-action:pan-y;
   }
-  #controls h2{font-size:9px;margin-bottom:6px;gap:4px;}
-  #controls h2 span{font-size:10px;}
-  .ctrl-section{margin-bottom:5px;}
-  .ctrl-section > label{font-size:7px;margin-bottom:2px;padding-bottom:2px;}
-  .btn-group{gap:3px;}
-  .btn{padding:3px 4px;font-size:8px;border-radius:3px;}
-  .btn-play{width:22px;height:18px;font-size:10px;}
-  .toggle-row{padding:1px 0;gap:4px;}
-  .toggle-row span{font-size:7px;}
-  .toggle{width:22px;height:12px;border-radius:6px;border-width:1px;}
-  .toggle::after{width:9px;height:9px;top:1px;left:1px;}
-  .toggle.on::after{transform:translateX(9px);}
-  .cat-header{padding:3px 4px;margin:1px 0;border-radius:4px;}
-  .cat-header-left{gap:3px;}
-  .cat-icon{font-size:8px;width:12px;}
-  .cat-name{font-size:7px;}
-  .cat-count{font-size:6px;padding:0 3px;border-radius:5px;}
-  .cat-arrow{font-size:7px;}
-  .cat-list.open{max-height:400px;}
-  .cat-list-inner{padding:2px 0 2px 2px;}
-  .cat-item{padding:3px 3px;border-radius:3px;font-size:7px;gap:3px;}
-  .cat-item-dot{width:4px;height:4px;}
-  input[type=range]{height:2px;margin:2px 0;}
-  input[type=range]::-webkit-slider-thumb{width:8px;height:8px;}
-  .speed-val{font-size:6px;margin-top:1px;}
-  #zoom-indicator{bottom:4px;left:4px;font-size:7px;padding:2px 4px;border-radius:4px;}
+  #controls h2{font-size:7px;margin-bottom:4px;gap:2px;white-space:nowrap;}
+  #controls h2 span{font-size:8px;}
+  .ctrl-section{margin-bottom:3px;}
+  .ctrl-section > label{font-size:6px;margin-bottom:1px;padding-bottom:1px;}
+  .btn-group{gap:2px;}
+  .btn{padding:2px 3px;font-size:7px;border-radius:2px;}
+  .btn-play{width:18px;height:14px;font-size:8px;}
+  .toggle-row{padding:1px 0;gap:2px;}
+  .toggle-row span{font-size:6px;}
+  .toggle{width:18px;height:10px;border-radius:5px;border-width:1px;}
+  .toggle::after{width:7px;height:7px;top:1px;left:1px;}
+  .toggle.on::after{transform:translateX(7px);}
+  input[type=range]{height:2px;margin:1px 0;}
+  input[type=range]::-webkit-slider-thumb{width:6px;height:6px;}
+  .speed-val{font-size:6px;margin-top:0;}
+  .cat-header{padding:2px 3px;margin:0;border-radius:3px;}
+  .cat-header-left{gap:2px;}
+  .cat-icon{font-size:7px;width:10px;}
+  .cat-name{font-size:6px;}
+  .cat-count{font-size:5px;padding:0 2px;border-radius:4px;}
+  .cat-arrow{font-size:6px;}
+  .cat-list.open{max-height:300px;}
+  .cat-list-inner{padding:1px 0 1px 2px;}
+  .cat-item{padding:2px 2px;border-radius:2px;font-size:6px;gap:2px;}
+  .cat-item-dot{width:3px;height:3px;}
+  #zoom-indicator{bottom:3px;left:3px;font-size:6px;padding:1px 3px;border-radius:3px;}
   .star-container{pointer-events:none;}
 
   /* Panel info móvil (adaptado) */
@@ -610,17 +610,22 @@ input[type=range]::-webkit-slider-thumb{
   #info-panel .fun-fact{font-size:9px;margin-top:4px;padding:5px;}
 }
 @media(max-width:380px){
-  #controls{width:100px;padding:5px 4px;left:4px;top:4px;}
-  #controls h2{font-size:8px;margin-bottom:4px;}
-  .ctrl-section{margin-bottom:4px;}
-  .btn{padding:2px 3px;font-size:7px;}
-  .cat-name,.cat-item{font-size:7px;}
-  .cat-item{padding:2px 2px;}
-  .toggle-row span{font-size:6px;}
-  .toggle{width:20px;height:11px;}
-  .toggle::after{width:8px;height:8px;}
-  .toggle.on::after{transform:translateX(8px);}
-  .cat-icon{font-size:7px;width:10px;}
+  #controls{width:80px;padding:3px 2px;left:3px;top:3px;}
+  #controls h2{font-size:6px;margin-bottom:3px;}
+  .ctrl-section{margin-bottom:2px;}
+  .ctrl-section > label{font-size:5px;}
+  .btn{padding:1px 2px;font-size:6px;}
+  .btn-play{width:15px;height:12px;font-size:7px;}
+  .cat-name,.cat-item{font-size:6px;}
+  .cat-item{padding:1px 2px;}
+  .toggle-row span{font-size:5px;}
+  .toggle{width:16px;height:9px;}
+  .toggle::after{width:6px;height:6px;}
+  .toggle.on::after{transform:translateX(6px);}
+  .cat-icon{font-size:6px;width:8px;}
+  .cat-item-dot{width:2px;height:2px;}
+  input[type=range]::-webkit-slider-thumb{width:5px;height:5px;}
+  #zoom-indicator{font-size:5px;}
 }
 @supports(padding:env(safe-area-inset-bottom)){
   #info-panel{padding-bottom:calc(12px + env(safe-area-inset-bottom));}

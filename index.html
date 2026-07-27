@@ -1522,7 +1522,6 @@ function applyResponsiveScale() {
   let scale = minDim / 1450;
   scale = Math.max(0.25, Math.min(1, scale));
   els.systemContent.style.transform = `scale(${scale})`;
-  document.querySelectorAll('.orbit[data-planet]').forEach(o => o.style.removeProperty('--radius'));
 }
 
 // ============ CONSTELACIONES (88 constelaciones IAU) ============

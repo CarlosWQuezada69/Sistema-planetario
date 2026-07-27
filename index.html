@@ -670,56 +670,56 @@ input[type=range]::-webkit-slider-thumb{
 <div id="solar-system">
 <div class="system-content">
   <div class="sun"></div>
-  <div class="orbit" style="--radius:150px;--period:4s;" data-planet="mercury">
+  <div class="orbit" style="--radius:100px;--period:4s;" data-planet="mercury">
     <div class="planet mercury" onclick="onPlanetClick('mercury')"></div>
     <span class="planet-label">Mercurio</span>
   </div>
-  <div class="orbit" style="--radius:210px;--period:7s;" data-planet="venus">
+  <div class="orbit" style="--radius:155px;--period:7s;" data-planet="venus">
     <div class="planet venus" onclick="onPlanetClick('venus')"></div>
     <span class="planet-label">Venus</span>
   </div>
-  <div class="orbit" style="--radius:270px;--period:10s;" data-planet="earth">
+  <div class="orbit" style="--radius:215px;--period:10s;" data-planet="earth">
     <div class="planet earth" onclick="onPlanetClick('earth')">
       <div class="moon-orbit"><div class="moon"></div></div>
     </div>
     <span class="planet-label">Tierra</span>
   </div>
-  <div class="orbit" style="--radius:340px;--period:14s;" data-planet="mars">
+  <div class="orbit" style="--radius:280px;--period:14s;" data-planet="mars">
     <div class="planet mars" onclick="onPlanetClick('mars')"></div>
     <span class="planet-label">Marte</span>
   </div>
-  <div class="orbit" style="--radius:430px;--period:22s;" data-planet="jupiter">
+  <div class="orbit" style="--radius:380px;--period:22s;" data-planet="jupiter">
     <div class="planet jupiter" onclick="onPlanetClick('jupiter')"></div>
     <span class="planet-label">Júpiter</span>
   </div>
-  <div class="orbit" style="--radius:520px;--period:30s;" data-planet="saturn">
+  <div class="orbit" style="--radius:480px;--period:30s;" data-planet="saturn">
     <div class="planet saturn" onclick="onPlanetClick('saturn')">
       <div class="saturn-rings"></div>
     </div>
     <span class="planet-label">Saturno</span>
   </div>
-  <div class="orbit" style="--radius:600px;--period:40s;" data-planet="uranus">
+  <div class="orbit" style="--radius:570px;--period:40s;" data-planet="uranus">
     <div class="planet uranus" onclick="onPlanetClick('uranus')"></div>
     <span class="planet-label">Urano</span>
   </div>
-  <div class="orbit" style="--radius:680px;--period:50s;" data-planet="neptune">
+  <div class="orbit" style="--radius:660px;--period:50s;" data-planet="neptune">
     <div class="planet neptune" onclick="onPlanetClick('neptune')"></div>
     <span class="planet-label">Neptuno</span>
   </div>
   <!-- ASTEROIDES FAMOSOS -->
-  <div class="orbit asteroid-orbit" style="--radius:370px;--period:16s;" data-planet="ceres">
+  <div class="orbit asteroid-orbit" style="--radius:315px;--period:16s;" data-planet="ceres">
     <div class="famous-asteroid ceres" onclick="onAsteroidClick('ceres')"></div>
     <span class="planet-label">Ceres</span>
   </div>
-  <div class="orbit asteroid-orbit" style="--radius:385px;--period:19s;" data-planet="vesta">
+  <div class="orbit asteroid-orbit" style="--radius:335px;--period:19s;" data-planet="vesta">
     <div class="famous-asteroid vesta" onclick="onAsteroidClick('vesta')"></div>
     <span class="planet-label">Vesta</span>
   </div>
-  <div class="orbit asteroid-orbit" style="--radius:395px;--period:21s;" data-planet="pallas">
+  <div class="orbit asteroid-orbit" style="--radius:350px;--period:21s;" data-planet="pallas">
     <div class="famous-asteroid pallas" onclick="onAsteroidClick('pallas')"></div>
     <span class="planet-label">Pallas</span>
   </div>
-  <div class="orbit asteroid-orbit" style="--radius:405px;--period:24s;" data-planet="eros">
+  <div class="orbit asteroid-orbit" style="--radius:365px;--period:24s;" data-planet="eros">
     <div class="famous-asteroid eros" onclick="onAsteroidClick('eros')"></div>
     <span class="planet-label">Eros</span>
   </div>
@@ -1516,43 +1516,11 @@ els.solarSystem.addEventListener('click', (e) => {
 });
 
 // ============ ESCALADO RESPONSIVE ============
-const desktopRadii = {
-  mercury: 150, venus: 210, earth: 270, mars: 340,
-  jupiter: 430, saturn: 520, uranus: 600, neptune: 680
-};
 function applyResponsiveScale() {
-  const isMobile = window.innerWidth <= 768;
-  if (isMobile) {
-    els.systemContent.style.transform = 'none';
-    const w = window.innerWidth;
-    const base = {
-      mercury: 85, venus: 120, earth: 160, mars: 205,
-      jupiter: 270, saturn: 340, uranus: 400, neptune: 460
-    };
-    const t = Math.min(1, Math.max(0, (w - 320) / 350));
-    Object.keys(base).forEach(key => {
-      const r = Math.round(base[key] + (desktopRadii[key] - base[key]) * t);
-      const orbit = document.querySelector(`.orbit[data-planet="${key}"]`);
-      if (orbit) orbit.style.setProperty('--radius', `${r}px`);
-    });
-    const astBase = [220, 230, 238, 245];
-    const astDesktop = [370, 385, 395, 405];
-    document.querySelectorAll('.orbit.asteroid-orbit').forEach((o, i) => {
-      if (i < astBase.length) {
-        const r = Math.round(astBase[i] + (astDesktop[i] - astBase[i]) * t);
-        o.style.setProperty('--radius', `${r}px`);
-      }
-    });
-  } else {
-    const minDim = Math.min(window.innerWidth, window.innerHeight);
-    let scale = minDim / 1450;
-    scale = Math.max(0.25, Math.min(1, scale));
-    els.systemContent.style.transform = `scale(${scale})`;
-    Object.entries(desktopRadii).forEach(([key, r]) => {
-      const orbit = document.querySelector(`.orbit[data-planet="${key}"]`);
-      if (orbit) orbit.style.setProperty('--radius', `${r}px`);
-    });
-  }
+  const minDim = Math.min(window.innerWidth, window.innerHeight);
+  let scale = minDim / 1450;
+  scale = Math.max(0.25, Math.min(1, scale));
+  els.systemContent.style.transform = `scale(${scale})`;
 }
 
 // ============ CONSTELACIONES (88 constelaciones IAU) ============

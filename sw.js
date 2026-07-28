@@ -1,6 +1,7 @@
-const CACHE_NAME = 'sistema-solar-v1';
+const CACHE_NAME = 'sistema-solar-v3';
 const ASSETS = [
-  '/solar_system.html',
+  '/',
+  '/index.html',
   '/manifest.json',
   '/icon-192.svg',
   '/icon-512.svg'
@@ -24,6 +25,10 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request).then(resp => {
+      const clone = resp.clone();
+      caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+      return resp;
+    }).catch(() => caches.match(e.request))
   );
 });

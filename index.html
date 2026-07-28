@@ -16,8 +16,10 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--speed:1;}
 html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:rgba(100,180,255,0.3);}
-button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer;}
+button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer;padding:0;margin:0;text-align:left;}
+button:focus-visible{outline:2px solid rgba(100,180,255,0.6);outline-offset:2px;}
 .cat-header:focus-visible,.toggle:focus-visible{outline:2px solid rgba(100,180,255,0.6);outline-offset:2px;}
+.planet:focus-visible,.famous-asteroid:focus-visible,.famous-star:focus-visible,.blackhole-marker:focus-visible,.sun:focus-visible,.moon:focus-visible{outline:2px solid rgba(100,180,255,0.8);outline-offset:4px;}
 
 /* ========== FONDO ========== */
 #solar-system{
@@ -408,6 +410,7 @@ button{font-family:inherit;background:none;border:none;color:inherit;cursor:poin
   box-shadow:0 8px 32px rgba(0,0,0,0.6);
   max-height:calc(100vh - 32px);
   overflow-y:auto;
+  overscroll-behavior:contain;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
   -webkit-overflow-scrolling:touch;
 }
@@ -687,7 +690,7 @@ input[type=range]::-webkit-slider-thumb{
   @keyframes loadspin{to{transform:rotate(360deg);}}
   #loader p{font-size:12px;color:rgba(255,255,255,0.3);margin:0;}
   @media(max-width:768px){#loader p{font-size:10px;}}
-  @media(prefers-reduced-motion:reduce){.twinkle,.sun,.star-dot,.blackhole-dot,.spinner{animation:none!important;}#controls,#info-panel{transition:none!important;}}
+  @media(prefers-reduced-motion:reduce){.twinkle,.sun,.star-dot,.blackhole-dot,.spinner,.orbit,.famous-asteroid,.planet{animation:none!important;}#controls,#info-panel{transition:none!important;}}
 </style>
 </head>
 <body>
@@ -696,117 +699,117 @@ input[type=range]::-webkit-slider-thumb{
 
 <div id="solar-system">
 <div class="system-content">
-  <div class="sun" onclick="onSunClick()" role="button" tabindex="0"></div>
+  <button class="sun" onclick="onSunClick()" aria-label="Sol" type="button"></button>
   <div class="orbit" style="--radius:100px;--period:4s;" data-planet="mercury">
-    <div class="planet mercury" onclick="onPlanetClick('mercury')"></div>
+    <button class="planet mercury" onclick="onPlanetClick('mercury')" aria-label="Mercurio" type="button"></button>
     <span class="planet-label">Mercurio</span>
   </div>
   <div class="orbit" style="--radius:155px;--period:7s;" data-planet="venus">
-    <div class="planet venus" onclick="onPlanetClick('venus')"></div>
+    <button class="planet venus" onclick="onPlanetClick('venus')" aria-label="Venus" type="button"></button>
     <span class="planet-label">Venus</span>
   </div>
   <div class="orbit" style="--radius:215px;--period:10s;" data-planet="earth">
-    <div class="planet earth" onclick="onPlanetClick('earth')">
-      <div class="moon-orbit"><div class="moon" onclick="onMoonClick()" role="button" tabindex="0"></div></div>
-    </div>
+    <button class="planet earth" onclick="onPlanetClick('earth')" aria-label="Tierra" type="button">
+      <div class="moon-orbit"><button class="moon" onclick="onMoonClick()" aria-label="Luna" type="button"></button></div>
+    </button>
     <span class="planet-label">Tierra</span>
   </div>
   <div class="orbit" style="--radius:280px;--period:14s;" data-planet="mars">
-    <div class="planet mars" onclick="onPlanetClick('mars')"></div>
+    <button class="planet mars" onclick="onPlanetClick('mars')" aria-label="Marte" type="button"></button>
     <span class="planet-label">Marte</span>
   </div>
   <div class="orbit" style="--radius:380px;--period:22s;" data-planet="jupiter">
-    <div class="planet jupiter" onclick="onPlanetClick('jupiter')"></div>
+    <button class="planet jupiter" onclick="onPlanetClick('jupiter')" aria-label="Júpiter" type="button"></button>
     <span class="planet-label">Júpiter</span>
   </div>
   <div class="orbit" style="--radius:480px;--period:30s;" data-planet="saturn">
-    <div class="planet saturn" onclick="onPlanetClick('saturn')">
+    <button class="planet saturn" onclick="onPlanetClick('saturn')" aria-label="Saturno" type="button">
       <div class="saturn-rings"></div>
-    </div>
+    </button>
     <span class="planet-label">Saturno</span>
   </div>
   <div class="orbit" style="--radius:570px;--period:40s;" data-planet="uranus">
-    <div class="planet uranus" onclick="onPlanetClick('uranus')"></div>
+    <button class="planet uranus" onclick="onPlanetClick('uranus')" aria-label="Urano" type="button"></button>
     <span class="planet-label">Urano</span>
   </div>
   <div class="orbit" style="--radius:660px;--period:50s;" data-planet="neptune">
-    <div class="planet neptune" onclick="onPlanetClick('neptune')"></div>
+    <button class="planet neptune" onclick="onPlanetClick('neptune')" aria-label="Neptuno" type="button"></button>
     <span class="planet-label">Neptuno</span>
   </div>
   <!-- ASTEROIDES FAMOSOS -->
   <div class="orbit asteroid-orbit" style="--radius:315px;--period:16s;" data-planet="ceres">
-    <div class="famous-asteroid ceres" onclick="onAsteroidClick('ceres')"></div>
+    <button class="famous-asteroid ceres" onclick="onAsteroidClick('ceres')" aria-label="Ceres" type="button"></button>
     <span class="planet-label">Ceres</span>
   </div>
   <div class="orbit asteroid-orbit" style="--radius:335px;--period:19s;" data-planet="vesta">
-    <div class="famous-asteroid vesta" onclick="onAsteroidClick('vesta')"></div>
+    <button class="famous-asteroid vesta" onclick="onAsteroidClick('vesta')" aria-label="Vesta" type="button"></button>
     <span class="planet-label">Vesta</span>
   </div>
   <div class="orbit asteroid-orbit" style="--radius:350px;--period:21s;" data-planet="pallas">
-    <div class="famous-asteroid pallas" onclick="onAsteroidClick('pallas')"></div>
+    <button class="famous-asteroid pallas" onclick="onAsteroidClick('pallas')" aria-label="Pallas" type="button"></button>
     <span class="planet-label">Pallas</span>
   </div>
   <div class="orbit asteroid-orbit" style="--radius:365px;--period:24s;" data-planet="eros">
-    <div class="famous-asteroid eros" onclick="onAsteroidClick('eros')"></div>
+    <button class="famous-asteroid eros" onclick="onAsteroidClick('eros')" aria-label="Eros" type="button"></button>
     <span class="planet-label">Eros</span>
   </div>
   <!-- ESTRELLAS FAMOSAS (fijas en fondo) -->
-  <div class="famous-star" style="left:8%;top:12%;" onclick="onStarClick('sirius')">
+  <button class="famous-star" style="left:8%;top:12%;" onclick="onStarClick('sirius')" aria-label="Sirius" type="button">
     <div class="star-dot sirius"></div><span class="star-label">Sirius</span>
-  </div>
-  <div class="famous-star" style="left:75%;top:8%;" onclick="onStarClick('betelgeuse')">
+  </button>
+  <button class="famous-star" style="left:75%;top:8%;" onclick="onStarClick('betelgeuse')" aria-label="Betelgeuse" type="button">
     <div class="star-dot betelgeuse"></div><span class="star-label">Betelgeuse</span>
-  </div>
-  <div class="famous-star" style="left:50%;top:5%;" onclick="onStarClick('polaris')">
+  </button>
+  <button class="famous-star" style="left:50%;top:5%;" onclick="onStarClick('polaris')" aria-label="Polaris" type="button">
     <div class="star-dot polaris"></div><span class="star-label">Polaris</span>
-  </div>
-  <div class="famous-star" style="left:85%;top:25%;" onclick="onStarClick('vega')">
+  </button>
+  <button class="famous-star" style="left:85%;top:25%;" onclick="onStarClick('vega')" aria-label="Vega" type="button">
     <div class="star-dot vega"></div><span class="star-label">Vega</span>
-  </div>
-  <div class="famous-star" style="left:15%;top:82%;" onclick="onStarClick('rigel')">
+  </button>
+  <button class="famous-star" style="left:15%;top:82%;" onclick="onStarClick('rigel')" aria-label="Rigel" type="button">
     <div class="star-dot rigel"></div><span class="star-label">Rigel</span>
-  </div>
-  <div class="famous-star" style="left:90%;top:70%;" onclick="onStarClick('antares')">
+  </button>
+  <button class="famous-star" style="left:90%;top:70%;" onclick="onStarClick('antares')" aria-label="Antares" type="button">
     <div class="star-dot antares"></div><span class="star-label">Antares</span>
-  </div>
-  <div class="famous-star" style="left:5%;top:55%;" onclick="onStarClick('aldebaran')">
+  </button>
+  <button class="famous-star" style="left:5%;top:55%;" onclick="onStarClick('aldebaran')" aria-label="Aldebarán" type="button">
     <div class="star-dot aldebaran"></div><span class="star-label">Aldebarán</span>
-  </div>
-  <div class="famous-star" style="left:65%;top:88%;" onclick="onStarClick('proxima')">
+  </button>
+  <button class="famous-star" style="left:65%;top:88%;" onclick="onStarClick('proxima')" aria-label="Próxima Centauri" type="button">
     <div class="star-dot proxima"></div><span class="star-label">Próx. Centauri</span>
-  </div>
-  <div class="famous-star" style="left:40%;top:92%;" onclick="onStarClick('canopus')">
+  </button>
+  <button class="famous-star" style="left:40%;top:92%;" onclick="onStarClick('canopus')" aria-label="Canopus" type="button">
     <div class="star-dot canopus"></div><span class="star-label">Canopus</span>
-  </div>
-  <div class="famous-star" style="left:92%;top:48%;" onclick="onStarClick('arcturus')">
+  </button>
+  <button class="famous-star" style="left:92%;top:48%;" onclick="onStarClick('arcturus')" aria-label="Arcturus" type="button">
     <div class="star-dot arcturus"></div><span class="star-label">Arcturus</span>
-  </div>
+  </button>
   <!-- AGUJEROS NEGROS -->
-  <div class="blackhole-marker" style="left:50%;top:50%;transform:translate(-50%,-50%);" onclick="onBlackholeClick('sagittarius')">
+  <button class="blackhole-marker" style="left:50%;top:50%;transform:translate(-50%,-50%);" onclick="onBlackholeClick('sagittarius')" aria-label="Sagittarius A*" type="button">
     <div class="blackhole-dot sagittarius"></div><span class="blackhole-label">Sgr A*</span>
-  </div>
-  <div class="blackhole-marker" style="left:35%;top:25%;" onclick="onBlackholeClick('m87')">
+  </button>
+  <button class="blackhole-marker" style="left:35%;top:25%;" onclick="onBlackholeClick('m87')" aria-label="M87*" type="button">
     <div class="blackhole-dot m87"></div><span class="blackhole-label">M87*</span>
-  </div>
-  <div class="blackhole-marker" style="left:12%;top:35%;" onclick="onBlackholeClick('cygnus')">
+  </button>
+  <button class="blackhole-marker" style="left:12%;top:35%;" onclick="onBlackholeClick('cygnus')" aria-label="Cygnus X-1" type="button">
     <div class="blackhole-dot"></div><span class="blackhole-label">Cyg X-1</span>
-  </div>
-  <div class="blackhole-marker" style="left:78%;top:15%;" onclick="onBlackholeClick('cygnusx3')">
+  </button>
+  <button class="blackhole-marker" style="left:78%;top:15%;" onclick="onBlackholeClick('cygnusx3')" aria-label="Cygnus X-3" type="button">
     <div class="blackhole-dot"></div><span class="blackhole-label">Cyg X-3</span>
-  </div>
-  <div class="blackhole-marker" style="left:60%;top:75%;" onclick="onBlackholeClick('grs')">
+  </button>
+  <button class="blackhole-marker" style="left:60%;top:75%;" onclick="onBlackholeClick('grs')" aria-label="GRS 1915+105" type="button">
     <div class="blackhole-dot"></div><span class="blackhole-label">GRS 1915</span>
-  </div>
-  <div class="blackhole-marker" style="left:25%;top:70%;" onclick="onBlackholeClick('v404')">
+  </button>
+  <button class="blackhole-marker" style="left:25%;top:70%;" onclick="onBlackholeClick('v404')" aria-label="V404 Cygni" type="button">
     <div class="blackhole-dot"></div><span class="blackhole-label">V404 Cyg</span>
-  </div>
+  </button>
   <canvas id="constellation-canvas"></canvas>
   <div class="star-container"></div>
   <div class="asteroid-belt" id="asteroid-belt"></div>
 </div>
 </div>
 
-<div id="controls-overlay" onclick="toggleMobileControls()"></div>
+<button id="controls-overlay" onclick="toggleMobileControls()" aria-label="Cerrar controles" type="button"></button>
 <button id="controls-toggle" onclick="toggleMobileControls()" aria-label="Abrir controles">☀</button>
 
 <div id="controls">
@@ -1012,7 +1015,8 @@ const starCount = isMobile ? 80 : 200;
 
 // ============ BOTONES POR CATEGORÍA ============
 function createItem(container, name, key, clickFn, color) {
-  const item = document.createElement('div');
+  const item = document.createElement('button');
+  item.type = 'button';
   item.className = 'cat-item';
   item.dataset.key = key;
   item.onclick = (e) => { e.stopPropagation(); clickFn(key); if (window.innerWidth <= 768) closeMobileControls(); };
@@ -1346,12 +1350,18 @@ function getCurrentAngle(orbit) {
   return ((now / (period / currentSpeed)) % 1) * 2 * Math.PI;
 }
 
+// Cache orbit radii to avoid layout reads in render
+const orbitRadii = {};
+document.querySelectorAll('.orbit[data-planet]').forEach(o => {
+  orbitRadii[o.dataset.planet] = parseFloat(o.style.getPropertyValue('--radius'));
+});
+
 function trackPlanetLoop() {
   if (!currentFollowing) { followRaf = null; return; }
   const orbit = document.querySelector(`[data-planet="${currentFollowing}"]`);
   if (!orbit) { followRaf = null; return; }
 
-  const radius = parseFloat(orbit.style.getPropertyValue('--radius'));
+  const radius = orbitRadii[currentFollowing] || parseFloat(orbit.style.getPropertyValue('--radius'));
   const angle = getCurrentAngle(orbit);
 
   const offsetX = Math.sin(angle) * radius * currentSystemScale;
@@ -1456,7 +1466,8 @@ let dragMoved = false;
 els.solarSystem.addEventListener('mousedown', (e) => {
   if (currentFollowing || e.button !== 0) return;
   if (e.target.closest('.planet') || e.target.closest('.famous-asteroid') ||
-      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker')) return;
+      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker') ||
+      e.target.closest('.sun') || e.target.closest('.moon')) return;
   isDragging = true; dragMoved = false;
   dragStartX = e.clientX; dragStartY = e.clientY;
   dragPanStartX = panX; dragPanStartY = panY;
@@ -1481,7 +1492,8 @@ let touchId = null;
 els.solarSystem.addEventListener('touchstart', (e) => {
   if (currentFollowing || e.touches.length !== 1) return;
   if (e.target.closest('.planet') || e.target.closest('.famous-asteroid') ||
-      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker')) return;
+      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker') ||
+      e.target.closest('.sun') || e.target.closest('.moon')) return;
   touchId = e.touches[0].identifier;
   isDragging = true; dragMoved = false;
   dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
@@ -1534,16 +1546,6 @@ infoPanel.addEventListener('touchend', (e) => {
     infoPanel.classList.add('visible');
   }
 }, { passive: true });
-
-// On mobile, tap empty space to stop following
-els.solarSystem.addEventListener('click', (e) => {
-  if (window.innerWidth > 768) return;
-  if (!currentFollowing) return;
-  if (e.target.closest('.planet') || e.target.closest('.famous-asteroid') ||
-      e.target.closest('.famous-star') || e.target.closest('.blackhole-marker') ||
-      e.target.closest('#info-panel')) return;
-  stopFollowing();
-});
 
 // On mobile, click on orbit ring activates the planet
 document.addEventListener('click', (e) => {
@@ -1610,8 +1612,19 @@ function closeInfo() {
   if (window.innerWidth <= 768) stopFollowing();
 }
 
-// ============ CLICK FUERA ============
+// ============ CLICK EN SOLAR SYSTEM ============
 els.solarSystem.addEventListener('click', (e) => {
+  // Mobile: tap empty space to stop following
+  if (window.innerWidth <= 768 && currentFollowing) {
+    if (!e.target.closest('.planet') && !e.target.closest('.famous-asteroid') &&
+        !e.target.closest('.famous-star') && !e.target.closest('.blackhole-marker') &&
+        !e.target.closest('.sun') && !e.target.closest('.moon') &&
+        !e.target.closest('#info-panel')) {
+      stopFollowing();
+    }
+    return;
+  }
+  // Desktop: click on empty space or star background
   if (e.target.id === 'solar-system' || e.target.classList.contains('star')) {
     if (currentFollowing) stopFollowing();
     else closeInfo();

@@ -28,6 +28,7 @@ button{font-family:inherit;background:none;border:none;color:inherit;cursor:poin
     radial-gradient(ellipse at 50% 80%, rgba(80,0,40,0.15) 0%, transparent 50%),
     #05050f;
   transform-origin:center center;-webkit-transform-origin:center center;
+  will-change:transform;
   touch-action:manipulation;
 }
 #solar-system .system-content{
@@ -1133,7 +1134,7 @@ function toggleOption(opt) {
 }
 
 // ============ SEGUIMIENTO ============
-const ZOOM_FOLLOW = isMobile ? 1.8 : 2.2;
+const ZOOM_FOLLOW = isMobile ? 2.4 : 2.2;
 let currentCategory = null;
 let panX = 0, panY = 0;
 
@@ -1587,10 +1588,12 @@ els.solarSystem.addEventListener('click', (e) => {
 // ============ ESCALADO RESPONSIVE ============
 function applyResponsiveScale() {
   const minDim = Math.min(window.innerWidth, window.innerHeight);
-  let scale = minDim / 1450;
-  scale = Math.max(0.25, Math.min(1, scale));
+  const isMobileView = window.innerWidth <= 768;
+  let scale = minDim / (isMobileView ? 900 : 1450);
+  scale = Math.max(0.35, Math.min(1, scale));
   currentSystemScale = scale;
   els.systemContent.style.transform = `scale(${scale})`;
+}{scale})`;
 }
 
 // ============ CONSTELACIONES (88 constelaciones IAU) ============

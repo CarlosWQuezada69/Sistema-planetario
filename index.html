@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" style="color-scheme:dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#05050f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="icon-192.svg">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -13,7 +15,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--speed:1;}
-html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:rgba(100,180,255,0.3);}
+button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer;}
+.cat-header:focus-visible,.toggle:focus-visible{outline:2px solid rgba(100,180,255,0.6);outline-offset:2px;}
 
 /* ========== FONDO ========== */
 #solar-system{
@@ -24,7 +28,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
     radial-gradient(ellipse at 50% 80%, rgba(80,0,40,0.15) 0%, transparent 50%),
     #05050f;
   transform-origin:center center;-webkit-transform-origin:center center;
-  touch-action:none;
+  touch-action:manipulation;
 }
 #solar-system .system-content{
   position:absolute;inset:0;
@@ -400,7 +404,7 @@ html,body{width:100%;height:100%;background:#000;color:#fff;font-family:'Segoe U
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.12) transparent;
   -webkit-overflow-scrolling:touch;
 }
-#controls h2{
+#controls h1{
   font-size:13px;font-weight:600;
   letter-spacing:1px;text-transform:uppercase;
   color:rgba(255,255,255,0.9);
@@ -441,6 +445,7 @@ input[type=range]{
   -webkit-appearance:none;width:100%;height:4px;
   background:rgba(255,255,255,0.12);border-radius:2px;outline:none;margin:6px 0;
 }
+input[type=range]:focus-visible{box-shadow:0 0 0 2px rgba(100,180,255,0.5);}
 input[type=range]::-webkit-slider-thumb{
   -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
   background:#8cc4ff;cursor:pointer;box-shadow:0 0 6px rgba(100,180,255,0.5);
@@ -492,6 +497,7 @@ input[type=range]::-webkit-slider-thumb{
   border-radius:8px;color:#fff;font-size:12px;font-family:inherit;
   outline:none;transition:border-color 0.2s;
 }
+#search-input:focus-visible{box-shadow:0 0 0 2px rgba(100,180,255,0.5);}
 #search-input:focus{border-color:rgba(100,180,255,0.4);}
 #search-input::placeholder{color:rgba(255,255,255,0.3);}
 
@@ -600,7 +606,7 @@ input[type=range]::-webkit-slider-thumb{
   #controls .controls-close:active{background:rgba(255,255,255,0.15);}
   #controls.open{transform:translateY(0);}
 
-  #controls h2{font-size:16px;font-weight:600;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #controls h1{font-size:16px;font-weight:600;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   #controls h2 span{font-size:20px;}
   .ctrl-section{margin-bottom:14px;}
   .ctrl-section > label{font-size:10px;margin-bottom:6px;padding-bottom:4px;}
@@ -651,7 +657,7 @@ input[type=range]::-webkit-slider-thumb{
 }
 @media(max-width:380px){
   #controls{padding:16px 12px calc(16px + env(safe-area-inset-bottom));}
-  #controls h2{font-size:13px;}
+  #controls h1{font-size:13px;}
   .btn{padding:6px 10px;font-size:11px;min-height:34px;}
   .btn-play{width:38px;height:34px;font-size:16px;}
   .toggle{width:36px;height:20px;}
@@ -673,11 +679,12 @@ input[type=range]::-webkit-slider-thumb{
   @keyframes loadspin{to{transform:rotate(360deg);}}
   #loader p{font-size:12px;color:rgba(255,255,255,0.3);margin:0;}
   @media(max-width:768px){#loader p{font-size:10px;}}
+  @media(prefers-reduced-motion:reduce){.twinkle,.sun,.star-dot,.blackhole-dot,.spinner{animation:none!important;}#controls,#info-panel{transition:none!important;}}
 </style>
 </head>
 <body>
 
-<div id="loader"><div class="spinner"></div><p>Cargando sistema solar…</p></div>
+<div id="loader" role="status" aria-live="polite"><div class="spinner"></div><p>Cargando sistema solar…</p></div>
 
 <div id="solar-system">
 <div class="system-content">
@@ -792,78 +799,78 @@ input[type=range]::-webkit-slider-thumb{
 </div>
 
 <div id="controls-overlay" onclick="toggleMobileControls()"></div>
-<button id="controls-toggle" onclick="toggleMobileControls()">☀</button>
+<button id="controls-toggle" onclick="toggleMobileControls()" aria-label="Abrir controles">☀</button>
 
 <div id="controls">
   <div class="controls-header">
-    <h2><span>☀</span> Sistema Solar</h2>
-    <button class="controls-close" onclick="toggleMobileControls()">✕</button>
+    <h1><span aria-hidden="true">☀</span> Sistema Solar</h1>
+    <button class="controls-close" onclick="toggleMobileControls()" aria-label="Cerrar controles">✕</button>
   </div>
   <div class="ctrl-section">
     <label>Reproducción</label>
     <div class="btn-group">
-      <button class="btn btn-play active" id="btn-play" onclick="togglePlay()" title="Play / Pause">▶</button>
-      <button class="btn" onclick="resetView()" title="Restablecer vista">↺ Reset</button>
+      <button class="btn btn-play active" id="btn-play" onclick="togglePlay()" aria-label="Reproducir / Pausar">▶</button>
+      <button class="btn" onclick="resetView()" aria-label="Restablecer vista">↺ Reset</button>
     </div>
   </div>
   <div class="ctrl-section">
     <label>Velocidad orbital</label>
-    <input type="range" id="speed-slider" min="0.1" max="5" step="0.1" value="1" oninput="changeSpeed(this.value)">
-    <div class="speed-val" id="speed-val">1.0x</div>
+    <input type="range" id="speed-slider" min="0.1" max="5" step="0.1" value="1" oninput="changeSpeed(this.value)" autocomplete="off" name="speed">
+    <div class="speed-val" id="speed-val" aria-live="polite">1.0x</div>
   </div>
   <div class="ctrl-section">
     <label>Visibilidad</label>
-    <div class="toggle-row"><span>Órbitas</span><div class="toggle on" id="toggle-orbits" onclick="toggleOption('orbits')"></div></div>
-    <div class="toggle-row"><span>Etiquetas</span><div class="toggle on" id="toggle-labels" onclick="toggleOption('labels')"></div></div>
-    <div class="toggle-row"><span>Asteroides</span><div class="toggle on" id="toggle-asteroids" onclick="toggleOption('asteroids')"></div></div>
-    <div class="toggle-row"><span>Constelaciones</span><div class="toggle on" id="toggle-constellations" onclick="toggleOption('constellations')"></div></div>
+    <div class="toggle-row"><span>Órbitas</span><button class="toggle on" id="toggle-orbits" onclick="toggleOption('orbits')" type="button" aria-label="Alternar órbitas"></button></div>
+    <div class="toggle-row"><span>Etiquetas</span><button class="toggle on" id="toggle-labels" onclick="toggleOption('labels')" type="button" aria-label="Alternar etiquetas"></button></div>
+    <div class="toggle-row"><span>Asteroides</span><button class="toggle on" id="toggle-asteroids" onclick="toggleOption('asteroids')" type="button" aria-label="Alternar asteroides"></button></div>
+    <div class="toggle-row"><span>Constelaciones</span><button class="toggle on" id="toggle-constellations" onclick="toggleOption('constellations')" type="button" aria-label="Alternar constelaciones"></button></div>
   </div>
   <div class="ctrl-section">
     <label>Catálogo</label>
-    <input type="text" id="search-input" placeholder="Buscar planeta, estrella..." oninput="filterCatalog(this.value)" autocomplete="off">
-    <div class="cat-header open" onclick="toggleCat(this,'planets')">
-      <div class="cat-header-left"><span class="cat-icon">🪐</span><span class="cat-name">Planetas</span><span class="cat-count">8</span></div>
+    <input type="text" id="search-input" placeholder="Buscar planeta, estrella…" oninput="filterCatalog(this.value)" autocomplete="off" name="search">
+    <button class="cat-header open" onclick="toggleCat(this,'planets')" type="button" aria-expanded="true">
+      <div class="cat-header-left"><span class="cat-icon" aria-hidden="true">🪐</span><span class="cat-name">Planetas</span><span class="cat-count">8</span></div>
       <span class="cat-arrow">▸</span>
-    </div>
+    </button>
     <div class="cat-list open" id="cat-planets"><div class="cat-list-inner" id="planet-buttons"></div></div>
 
-    <div class="cat-header" onclick="toggleCat(this,'asteroids')">
-      <div class="cat-header-left"><span class="cat-icon">☄️</span><span class="cat-name">Asteroides</span><span class="cat-count">4</span></div>
+    <button class="cat-header" onclick="toggleCat(this,'asteroids')" type="button" aria-expanded="false">
+      <div class="cat-header-left"><span class="cat-icon" aria-hidden="true">☄️</span><span class="cat-name">Asteroides</span><span class="cat-count">4</span></div>
       <span class="cat-arrow">▸</span>
-    </div>
+    </button>
     <div class="cat-list" id="cat-asteroids"><div class="cat-list-inner" id="asteroid-buttons"></div></div>
 
-    <div class="cat-header" onclick="toggleCat(this,'stars')">
-      <div class="cat-header-left"><span class="cat-icon">⭐</span><span class="cat-name">Estrellas</span><span class="cat-count">10</span></div>
+    <button class="cat-header" onclick="toggleCat(this,'stars')" type="button" aria-expanded="false">
+      <div class="cat-header-left"><span class="cat-icon" aria-hidden="true">⭐</span><span class="cat-name">Estrellas</span><span class="cat-count">10</span></div>
       <span class="cat-arrow">▸</span>
-    </div>
+    </button>
     <div class="cat-list" id="cat-stars"><div class="cat-list-inner" id="star-buttons"></div></div>
 
-    <div class="cat-header" onclick="toggleCat(this,'blackholes')">
-      <div class="cat-header-left"><span class="cat-icon">🕳️</span><span class="cat-name">Agujeros Negros</span><span class="cat-count">6</span></div>
+    <button class="cat-header" onclick="toggleCat(this,'blackholes')" type="button" aria-expanded="false">
+      <div class="cat-header-left"><span class="cat-icon" aria-hidden="true">🕳️</span><span class="cat-name">Agujeros Negros</span><span class="cat-count">6</span></div>
       <span class="cat-arrow">▸</span>
-    </div>
+    </button>
     <div class="cat-list" id="cat-blackholes"><div class="cat-list-inner" id="blackhole-buttons"></div></div>
 
-    <div class="cat-header" onclick="toggleCat(this,'constellations')">
-      <div class="cat-header-left"><span class="cat-icon">✦</span><span class="cat-name">Constelaciones</span><span class="cat-count">21</span></div>
+    <button class="cat-header" onclick="toggleCat(this,'constellations')" type="button" aria-expanded="false">
+      <div class="cat-header-left"><span class="cat-icon" aria-hidden="true">✦</span><span class="cat-name">Constelaciones</span><span class="cat-count">21</span></div>
       <span class="cat-arrow">▸</span>
-    </div>
+    </button>
     <div class="cat-list" id="cat-constellations"><div class="cat-list-inner" id="constellation-buttons"></div></div>
   </div>
 </div>
 
 <div id="info-panel">
   <div class="info-handle"></div>
-  <button class="close-btn" onclick="closeInfo()">✕</button>
+  <button class="close-btn" onclick="closeInfo()" aria-label="Cerrar información">✕</button>
   <h3 id="info-name"><span class="planet-dot" id="info-dot"></span> <span id="info-title"></span></h3>
   <div class="subtitle" id="info-type"></div>
   <div class="data-grid" id="info-data"></div>
   <div class="fun-fact" id="info-fact"></div>
 </div>
 
-<div id="zoom-indicator">Zoom: 100%</div>
-<div id="mobile-follow-bar"><span id="mobile-follow-name"></span><button id="mobile-reset-btn" onclick="resetView()">↺</button></div>
+<div id="zoom-indicator" aria-live="polite">Zoom: 100%</div>
+<div id="mobile-follow-bar"><span id="mobile-follow-name"></span><button id="mobile-reset-btn" onclick="resetView()" aria-label="Restablecer vista">↺</button></div>
 
 <script>
 // ============ CACHE DE DOM ============
@@ -1090,6 +1097,7 @@ function toggleCat(header, catId) {
   const isOpen = list.classList.contains('open');
   list.classList.toggle('open');
   header.classList.toggle('open');
+  header.setAttribute('aria-expanded', !isOpen);
 }
 
 // ============ CONTROLES ============
@@ -1753,6 +1761,19 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') { setTransform(currentZoom, panX + panStep, panY); e.preventDefault(); }
   if (e.key === 'ArrowUp') { setTransform(currentZoom, panX, panY - panStep); e.preventDefault(); }
   if (e.key === 'ArrowDown') { setTransform(currentZoom, panX, panY + panStep); e.preventDefault(); }
+});
+
+// ============ KEYBOARD NAV ============
+document.querySelectorAll('.planet,.famous-asteroid,.famous-star,.blackhole-marker').forEach(el => {
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('role', 'button');
+});
+document.getElementById('solar-system').addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const target = e.target.closest('.planet,.famous-asteroid,.famous-star,.blackhole-marker');
+  if (!target) return;
+  e.preventDefault();
+  target.click();
 });
 
 // ============ SERVICE WORKER ============

@@ -1,7 +1,9 @@
-const CACHE_NAME = 'sistema-solar-v3';
+const CACHE_NAME = 'sistema-solar-v4';
 const ASSETS = [
   '/',
   '/index.html',
+  '/styles.css',
+  '/app.js',
   '/manifest.json',
   '/icon-192.svg',
   '/icon-512.svg'

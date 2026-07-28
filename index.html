@@ -61,11 +61,13 @@ button{font-family:inherit;background:none;border:none;color:inherit;cursor:poin
     0 0 150px 50px rgba(255,120,0,0.3),
     0 0 220px 80px rgba(255,80,0,0.15),
     inset -10px -10px 25px rgba(180,50,0,0.4);
-  animation:sun-pulse 4s ease-in-out infinite;
+  animation:sun-pulse 4s ease-in-out infinite, sun-rotate 60s linear infinite;
 }
 .sun::before{
   content:'';position:absolute;inset:-30px;border-radius:50%;z-index:-1;
-  background:radial-gradient(circle,rgba(255,200,50,0.25) 0%,transparent 65%);
+  background:
+    radial-gradient(circle,rgba(255,200,50,0.25) 0%,transparent 65%),
+    repeating-conic-gradient(rgba(255,200,50,0.03) 0deg 10deg, transparent 10deg 20deg);
   animation:corona 3s ease-in-out infinite alternate;
 }
 .sun::after{
@@ -79,6 +81,10 @@ button{font-family:inherit;background:none;border:none;color:inherit;cursor:poin
 @keyframes corona{
   0%{transform:scale(1);opacity:0.7;}
   100%{transform:scale(1.25);opacity:0.3;}
+}
+@keyframes sun-rotate{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
 }
 
 /* ========== ÓRBITAS ========== */
@@ -565,7 +571,7 @@ input[type=range]::-webkit-slider-thumb{
 
 @media(max-width:768px){
   #controls-toggle,#controls-overlay,#controls{display:none!important;}
-  #solar-system,.orbit,.planet,.famous-asteroid,.famous-star,.blackhole-marker{touch-action:manipulation;}
+  #solar-system,.orbit,.planet,.famous-asteroid,.famous-star,.blackhole-marker,.sun,.moon{touch-action:manipulation;}
   #controls-overlay{
     display:block;position:fixed;inset:0;z-index:98;
     background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;
@@ -643,7 +649,7 @@ input[type=range]::-webkit-slider-thumb{
   #mobile-reset-btn{background:none;border:none;color:#8cc4ff;font-size:16px;cursor:pointer;padding:2px 4px;line-height:1;}
   .star-container{pointer-events:none;}
   .star.twinkle{animation:none;}
-  .planet:active,.famous-asteroid:active,.famous-star:active,.blackhole-marker:active{filter:brightness(2);outline:2px solid rgba(255,255,255,0.5);outline-offset:2px;}
+  .planet:active,.famous-asteroid:active,.famous-star:active,.blackhole-marker:active,.sun:active,.moon:active{filter:brightness(2);outline:2px solid rgba(255,255,255,0.5);outline-offset:2px;}
 
   #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:16px 16px 0 0;max-height:35vh;padding:14px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;}
   #info-panel.visible{transform:translateY(0);}
@@ -689,7 +695,7 @@ input[type=range]::-webkit-slider-thumb{
 
 <div id="solar-system">
 <div class="system-content">
-  <div class="sun"></div>
+  <div class="sun" onclick="onSunClick()" role="button" tabindex="0"></div>
   <div class="orbit" style="--radius:100px;--period:4s;" data-planet="mercury">
     <div class="planet mercury" onclick="onPlanetClick('mercury')"></div>
     <span class="planet-label">Mercurio</span>
@@ -700,7 +706,7 @@ input[type=range]::-webkit-slider-thumb{
   </div>
   <div class="orbit" style="--radius:215px;--period:10s;" data-planet="earth">
     <div class="planet earth" onclick="onPlanetClick('earth')">
-      <div class="moon-orbit"><div class="moon"></div></div>
+      <div class="moon-orbit"><div class="moon" onclick="onMoonClick()" role="button" tabindex="0"></div></div>
     </div>
     <span class="planet-label">Tierra</span>
   </div>
@@ -908,7 +914,9 @@ const planetData = {
   jupiter:{name:'Júpiter',type:'Gigante gaseoso',color:'#daa520',diameter:'142,984 km',distance:'778.6 M km',period:'11.86 años',temp:'-110°C',moons:'95',gravity:'24.79 m/s²',fact:'<strong>Dato curioso:</strong> Júpiter es tan masivo que podría contener todos los demás planetas juntos. Su Gran Mancha Roja lleva activa al menos 350 años.'},
   saturn:{name:'Saturno',type:'Gigante gaseoso',color:'#deb887',diameter:'120,536 km',distance:'1,433.5 M km',period:'29.46 años',temp:'-140°C',moons:'146',gravity:'10.44 m/s²',fact:'<strong>Dato curioso:</strong> Los anillos de Saturno están compuestos de hielo y roca. Es tan poco denso que flotaría en agua.'},
   uranus:{name:'Urano',type:'Gigante de hielo',color:'#64dce6',diameter:'51,118 km',distance:'2,872.5 M km',period:'84 años',temp:'-195°C',moons:'28',gravity:'8.87 m/s²',fact:'<strong>Dato curioso:</strong> Urano rota de lado con un eje inclinado 98°. Fue el primer planeta descubierto con telescopio en 1781.'},
-  neptune:{name:'Neptuno',type:'Gigante de hielo',color:'#2850c8',diameter:'49,528 km',distance:'4,495.1 M km',period:'165 años',temp:'-200°C',moons:'16',gravity:'11.15 m/s²',fact:'<strong>Dato curioso:</strong> Neptuno tiene los vientos más rápidos del sistema solar, alcanzando 2,100 km/h.'}
+  neptune:{name:'Neptuno',type:'Gigante de hielo',color:'#2850c8',diameter:'49,528 km',distance:'4,495.1 M km',period:'165 años',temp:'-200°C',moons:'16',gravity:'11.15 m/s²',fact:'<strong>Dato curioso:</strong> Neptuno tiene los vientos más rápidos del sistema solar, alcanzando 2,100 km/h.'},
+  sun:{name:'Sol',type:'Estrella enana amarilla',color:'#ffaa00',diameter:'1,391,000 km',distance:'0 km (centro)',period:'25.4 días (rotación)',temp:'5,505°C',moons:'8 (planetas)',gravity:'274 m/s²',fact:'<strong>Dato curioso:</strong> El Sol contiene el 99.86% de la masa del sistema solar. Su temperatura en el núcleo alcanza los 15 millones de °C y cada segundo convierte 600 millones de toneladas de hidrógeno en helio.'},
+  moon:{name:'Luna',type:'Satélite natural',color:'#d0d0d0',diameter:'3,475 km',distance:'384,400 km de la Tierra',period:'27.3 días',temp:'-20°C (promedio)',moons:'0',gravity:'1.62 m/s²',fact:'<strong>Dato curioso:</strong> La Luna se aleja de la Tierra unos 3.8 cm cada año. Es el quinto satélite natural más grande del sistema solar y el único cuerpo celeste donde los humanos han caminado.'}
 };
 
 const asteroidData = {
@@ -1012,11 +1020,14 @@ function createItem(container, name, key, clickFn, color) {
 }
 
 // Planetas
-const planetKeys = ['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
-const planetNames = ['Mercurio','Venus','Tierra','Marte','Júpiter','Saturno','Urano','Neptuno'];
-const planetColors = ['#a0a0a0','#e8b84d','#1e90ff','#cd5c5c','#daa520','#deb887','#64dce6','#2850c8'];
+const planetKeys = ['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','moon'];
+const planetNames = ['Sol','Mercurio','Venus','Tierra','Marte','Júpiter','Saturno','Urano','Neptuno','Luna'];
+const planetColors = ['#ffaa00','#a0a0a0','#e8b84d','#1e90ff','#cd5c5c','#daa520','#deb887','#64dce6','#2850c8','#d0d0d0'];
 const pBtns = $('planet-buttons');
-planetKeys.forEach((k, i) => createItem(pBtns, planetNames[i], k, onPlanetClick, planetColors[i]));
+planetKeys.forEach((k, i) => {
+  const fn = k === 'sun' ? onSunClick : k === 'moon' ? onMoonClick : onPlanetClick;
+  createItem(pBtns, planetNames[i], k, fn, planetColors[i]);
+});
 
 // Asteroides
 const asteroidKeys = ['ceres','vesta','pallas','eros'];
@@ -1171,6 +1182,27 @@ function onPlanetClick(key) {
   }
 }
 
+function onSunClick() {
+  if (currentFollowing === 'sun') { stopFollowing(); return; }
+  currentFollowing = 'sun';
+  currentCategory = 'planet';
+  showInfo('sun', 'planet');
+  highlightBtn('sun');
+  els.solarSystem.style.transition = 'transform 0.5s ease';
+  setTransform(1.5, 0, 0);
+  currentZoom = 1.5;
+  els.zoomIndicator.textContent = 'Zoom: 150%';
+  setTimeout(() => { els.solarSystem.style.transition = ''; }, 550);
+}
+
+function onMoonClick() {
+  if (currentFollowing === 'moon') { stopFollowing(); return; }
+  currentFollowing = 'moon';
+  currentCategory = 'planet';
+  showInfo('moon', 'planet');
+  highlightBtn('moon');
+}
+
 function onAsteroidClick(key) {
   if (currentFollowing === key) { stopFollowing(); return; }
   currentFollowing = key;
@@ -1289,7 +1321,7 @@ function stopFollowing() {
   currentCategory = null;
   if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
   document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('focused'));
-  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker,.sun,.moon').forEach(p => p.classList.remove('selected'));
   document.getElementById('mobile-follow-bar')?.classList.remove('show');
   els.solarSystem.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
   panX = 0; panY = 0;
@@ -1335,7 +1367,7 @@ function resetView() {
   currentFollowing = null;
   currentCategory = null;
   document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('focused'));
-  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker,.sun,.moon').forEach(p => p.classList.remove('selected'));
   els.solarSystem.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
   panX = 0; panY = 0;
   els.solarSystem.style.transform = 'scale(1) translate(0px, 0px)';
@@ -1544,7 +1576,7 @@ function showInfo(key, category) {
   }
   if (!d) return;
 
-  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker,.sun,.moon').forEach(p => p.classList.remove('selected'));
 
   let el;
   if (category === 'blackhole') {
@@ -1573,7 +1605,7 @@ function showInfo(key, category) {
 function closeInfo() {
   els.infoPanel.classList.remove('visible');
   els.infoPanel.style.transform = '';
-  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker,.sun,.moon').forEach(p => p.classList.remove('selected'));
   if (window.innerWidth <= 768) stopFollowing();
 }
 
@@ -1767,13 +1799,13 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ============ KEYBOARD NAV ============
-document.querySelectorAll('.planet,.famous-asteroid,.famous-star,.blackhole-marker').forEach(el => {
+document.querySelectorAll('.planet,.famous-asteroid,.famous-star,.blackhole-marker,.sun,.moon').forEach(el => {
   el.setAttribute('tabindex', '0');
   el.setAttribute('role', 'button');
 });
 document.getElementById('solar-system').addEventListener('keydown', (e) => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
-  const target = e.target.closest('.planet,.famous-asteroid,.famous-star,.blackhole-marker');
+  const target = e.target.closest('.planet,.famous-asteroid,.famous-star,.blackhole-marker,.sun,.moon');
   if (!target) return;
   e.preventDefault();
   target.click();

@@ -570,8 +570,9 @@ input[type=range]::-webkit-slider-thumb{
 #controls-toggle,#controls-overlay{display:none;}
 
 @media(max-width:768px){
-  #controls-toggle,#controls-overlay,#controls{display:none!important;}
-  #solar-system,.orbit,.planet,.famous-asteroid,.famous-star,.blackhole-marker,.sun,.moon{touch-action:manipulation;}
+  #controls{display:none;}
+  #solar-system{will-change:auto;touch-action:manipulation;}
+  .orbit,.planet,.famous-asteroid,.famous-star,.blackhole-marker,.sun,.moon{touch-action:manipulation;}
   #controls-overlay{
     display:block;position:fixed;inset:0;z-index:98;
     background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;

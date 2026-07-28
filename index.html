@@ -21,14 +21,17 @@ button:focus-visible{outline:2px solid rgba(100,180,255,0.6);outline-offset:2px;
 .cat-header:focus-visible,.toggle:focus-visible{outline:2px solid rgba(100,180,255,0.6);outline-offset:2px;}
 .planet:focus-visible,.famous-asteroid:focus-visible,.famous-star:focus-visible,.blackhole-marker:focus-visible,.sun:focus-visible,.moon:focus-visible{outline:2px solid rgba(100,180,255,0.8);outline-offset:4px;}
 
-/* ========== FONDO ========== */
-#solar-system{
-  position:relative;width:100vw;height:100vh;
+/* ========== FONDO FIXED ========== */
+#bg-fixed{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
     radial-gradient(ellipse at 20% 50%, rgba(40,0,80,0.3) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(0,20,80,0.25) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 80%, rgba(80,0,40,0.15) 0%, transparent 50%),
     #05050f;
+}
+#solar-system{
+  position:relative;width:100vw;height:100vh;z-index:1;
   transform-origin:center center;-webkit-transform-origin:center center;
   will-change:transform;
   touch-action:manipulation;
@@ -615,12 +618,17 @@ input[type=range]::-webkit-slider-thumb{
   @keyframes loadspin{to{transform:rotate(360deg);}}
   #loader p{font-size:12px;color:rgba(255,255,255,0.3);margin:0;}
   @media(max-width:768px){#loader p{font-size:10px;}}
-  @media(prefers-reduced-motion:reduce){.twinkle,.sun,.star-dot,.blackhole-dot,.spinner,.orbit,.famous-asteroid,.planet{animation:none!important;}#controls,#info-panel{transition:none!important;}}
+  @media(prefers-reduced-motion:reduce){.twinkle,.sun,.star-dot,.blackhole-dot,.spinner,.famous-asteroid{animation:none!important;}#controls,#info-panel{transition:none!important;}}
 </style>
 </head>
 <body>
 
 <div id="loader" role="status" aria-live="polite"><div class="spinner"></div><p>Cargando sistema solar…</p></div>
+
+<div id="bg-fixed">
+  <canvas id="constellation-canvas"></canvas>
+  <div class="star-container"></div>
+</div>
 
 <div id="solar-system">
 <div class="system-content">
@@ -728,8 +736,6 @@ input[type=range]::-webkit-slider-thumb{
   <button class="blackhole-marker" style="left:25%;top:70%;" onclick="onBlackholeClick('v404')" aria-label="V404 Cygni" type="button">
     <div class="blackhole-dot"></div><span class="blackhole-label">V404 Cyg</span>
   </button>
-  <canvas id="constellation-canvas"></canvas>
-  <div class="star-container"></div>
   <div class="asteroid-belt" id="asteroid-belt"></div>
 </div>
 </div>

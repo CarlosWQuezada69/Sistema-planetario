@@ -92,8 +92,8 @@ const constellationInfo = {
 };
 
 // ============ GENERAR ESTRELLAS (diferido para no bloquear) ============
-const isMobile = window.innerWidth <= 768;
-const starCount = isMobile ? 80 : 200;
+const isMobile = false;
+const starCount = 200;
 (requestIdleCallback || setTimeout)(() => {
   const starFrag = document.createDocumentFragment();
   for (let i = 0; i < starCount; i++) {
@@ -114,7 +114,7 @@ const starCount = isMobile ? 80 : 200;
 
 // ============ GENERAR ASTEROIDES (diferido) ============
 (requestIdleCallback || setTimeout)(() => {
-  const asteroidCount = isMobile ? 15 : 30;
+  const asteroidCount = 30;
   const astFrag = document.createDocumentFragment();
   for (let i = 0; i < asteroidCount; i++) {
     const a = document.createElement('div');
@@ -183,12 +183,6 @@ let currentFollowing = null;
 let followRaf = null;
 const options = { orbits: true, labels: true, asteroids: true, constellations: true };
 
-// En móvil, abrir todas las categorías por defecto
-if (window.innerWidth <= 768) {
-  document.querySelectorAll('.cat-list').forEach(l => l.classList.add('open'));
-  document.querySelectorAll('.cat-header').forEach(h => h.classList.add('open'));
-}
-
 // ============ BÚSQUEDA EN CATÁLOGO ============
 function filterCatalog(query) {
   const q = query.toLowerCase().trim();
@@ -243,7 +237,7 @@ function toggleOption(opt) {
 }
 
 // ============ SEGUIMIENTO ============
-const ZOOM_FOLLOW = isMobile ? 2.4 : 2.2;
+const ZOOM_FOLLOW = 2.2;
 let currentCategory = null;
 let panX = 0, panY = 0;
 
@@ -268,15 +262,11 @@ function onPlanetClick(key) {
     setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
-    if (isMobile) {
-      setTimeout(() => { els.solarSystem.style.transition = ''; }, 320);
-    } else {
-      if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
-      setTimeout(() => {
-        els.solarSystem.style.transition = '';
-        trackPlanetLoop();
-      }, 320);
-    }
+    if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
+    setTimeout(() => {
+      els.solarSystem.style.transition = '';
+      trackPlanetLoop();
+    }, 320);
   }
 }
 
@@ -317,15 +307,11 @@ function onAsteroidClick(key) {
     setTransform(ZOOM_FOLLOW, -offsetX / ZOOM_FOLLOW, -offsetY / ZOOM_FOLLOW);
     currentZoom = ZOOM_FOLLOW;
     els.zoomIndicator.textContent = `Zoom: ${Math.round(ZOOM_FOLLOW * 100)}%`;
-    if (isMobile) {
-      setTimeout(() => { els.solarSystem.style.transition = ''; }, 320);
-    } else {
-      if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
-      setTimeout(() => {
-        els.solarSystem.style.transition = '';
-        trackPlanetLoop();
-      }, 320);
-    }
+    if (followRaf) { cancelAnimationFrame(followRaf); followRaf = null; }
+    setTimeout(() => {
+      els.solarSystem.style.transition = '';
+      trackPlanetLoop();
+    }, 320);
   }
 }
 
@@ -692,32 +678,16 @@ function showInfo(key, category) {
   els.infoData.innerHTML = fields.map(([l,v]) => `<div class="data-item"><div class="data-label">${l}</div><div class="data-value">${v}</div></div>`).join('');
   els.infoFact.innerHTML = d.fact || '';
   els.infoPanel.classList.add('visible');
-  if (window.innerWidth <= 768) {
-    document.getElementById('mobile-follow-name').textContent = 'Siguiendo: ' + d.name;
-    document.getElementById('mobile-follow-bar').classList.add('show');
-  }
 }
 
 function closeInfo() {
   els.infoPanel.classList.remove('visible');
   els.infoPanel.style.transform = '';
   document.querySelectorAll('.famous-asteroid,.planet,.famous-star,.blackhole-marker,.sun,.moon').forEach(p => p.classList.remove('selected'));
-  if (window.innerWidth <= 768) stopFollowing();
 }
 
 // ============ CLICK EN SOLAR SYSTEM ============
 els.solarSystem.addEventListener('click', (e) => {
-  // Mobile: tap empty space to stop following
-  if (window.innerWidth <= 768 && currentFollowing) {
-    if (!e.target.closest('.planet') && !e.target.closest('.famous-asteroid') &&
-        !e.target.closest('.famous-star') && !e.target.closest('.blackhole-marker') &&
-        !e.target.closest('.sun') && !e.target.closest('.moon') &&
-        !e.target.closest('#info-panel')) {
-      stopFollowing();
-    }
-    return;
-  }
-  // Desktop: click on empty space or star background
   if (e.target.id === 'solar-system' || e.target.classList.contains('star')) {
     if (currentFollowing) stopFollowing();
     else closeInfo();
@@ -727,8 +697,7 @@ els.solarSystem.addEventListener('click', (e) => {
 // ============ ESCALADO RESPONSIVE ============
 function applyResponsiveScale() {
   const minDim = Math.min(window.innerWidth, window.innerHeight);
-  const isMobileView = window.innerWidth <= 768;
-  let scale = minDim / (isMobileView ? 900 : 1450);
+  let scale = minDim / 1450;
   scale = Math.max(0.35, Math.min(1, scale));
   currentSystemScale = scale;
   els.systemContent.style.transform = `scale(${scale})`;

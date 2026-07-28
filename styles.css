@@ -557,31 +557,18 @@ input[type=range]::-webkit-slider-thumb{
 }
 
 @media(max-width:768px){
-  #controls{display:none;}
   #solar-system{will-change:auto;touch-action:manipulation;}
   .orbit,.planet,.famous-asteroid,.famous-star,.blackhole-marker,.sun,.moon{touch-action:manipulation;}
   .star-container{pointer-events:none;}
-  .star.twinkle{animation:none;}
   .planet:active,.famous-asteroid:active,.famous-star:active,.blackhole-marker:active,.sun:active,.moon:active{filter:brightness(2);outline:2px solid rgba(255,255,255,0.5);outline-offset:2px;}
   #mobile-follow-bar{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:90;gap:8px;align-items:center;background:rgba(8,8,28,0.9);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:4px 12px 4px 14px;font-size:11px;}
   #mobile-follow-bar.show{display:flex;}
   #mobile-follow-name{color:rgba(255,255,255,0.7);}
   #mobile-reset-btn{background:none;border:none;color:#8cc4ff;font-size:16px;cursor:pointer;padding:2px 4px;line-height:1;}
-
-  #info-panel{bottom:0;right:0;left:0;width:100%;border-radius:16px 16px 0 0;max-height:45vh;padding:14px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(100%);overflow-y:auto;}
-  #info-panel.visible{transform:translateY(0);}
-  .info-handle{display:block;height:3px;width:32px;margin-bottom:8px;border-radius:2px;}
-  #info-panel h3{font-size:15px;margin-bottom:2px;}
-  #info-panel .subtitle{font-size:12px;margin-bottom:8px;}
-  #info-panel .data-grid{grid-template-columns:1fr 1fr;gap:6px;}
-  #info-panel .data-item{padding:6px;}
-  #info-panel .data-item .data-label{font-size:8px;}
-  #info-panel .data-item .data-value{font-size:12px;}
-  #info-panel .fun-fact{font-size:10px;margin-top:6px;padding:8px;}
+  .info-handle{display:none;}
 }
 @media(max-width:380px){
   #controls{padding:16px 12px calc(16px + env(safe-area-inset-bottom));}
-  #controls h1{font-size:13px;}
   .btn{padding:6px 10px;font-size:11px;min-height:34px;}
   .btn-play{width:38px;height:34px;font-size:16px;}
   .toggle{width:36px;height:20px;}
